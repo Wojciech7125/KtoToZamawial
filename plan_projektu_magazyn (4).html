@@ -1,0 +1,1787 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan projektu — System Zarządzania Magazynem</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #f5f5f0;
+    color: #1a1a1a;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+  header {
+    border-bottom: 1px solid #d0cfc7;
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  h1 { font-size: 28px; font-weight: 500; margin: 0 0 8px; }
+  h2 { font-size: 20px; font-weight: 500; margin: 2.5rem 0 1rem; padding-bottom: 6px; border-bottom: 1px solid #d0cfc7; }
+  h3 { font-size: 16px; font-weight: 500; margin: 1.5rem 0 0.75rem; }
+  p { margin: 0 0 0.75rem; }
+  code {
+    background: #ebeae3;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-family: "SF Mono", Monaco, Consolas, monospace;
+    font-size: 0.9em;
+  }
+  .subtitle { color: #6a6a66; font-size: 14px; margin: 0; }
+  .card {
+    background: #ffffff;
+    border: 1px solid #d0cfc7;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .person-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .person-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .gabrys { background: #E6F1FB; color: #0C447C; }
+  .adam { background: #E1F5EE; color: #085041; }
+  .krzys { background: #FAEEDA; color: #633806; }
+  .wojtek { background: #EEEDFE; color: #3C3489; }
+  ul { margin: 0 0 0.75rem; padding-left: 22px; }
+  li { margin-bottom: 4px; }
+  .tag {
+    display: inline-block;
+    background: #ebeae3;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+    margin-right: 4px;
+    color: #444;
+  }
+  .mockup-label {
+    font-size: 12px;
+    color: #6a6a66;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 8px;
+    font-weight: 500;
+  }
+  .mockup-frame {
+    background: #ffffff;
+    border: 1px solid #d0cfc7;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+  .titlebar {
+    border-bottom: 1px solid #d0cfc7;
+    padding: 8px 14px;
+    font-size: 13px;
+    color: #6a6a66;
+    display: flex;
+    justify-content: space-between;
+    background: #fafaf5;
+  }
+  .menubar {
+    border-bottom: 1px solid #d0cfc7;
+    padding: 6px 14px;
+    font-size: 13px;
+    display: flex;
+    gap: 18px;
+  }
+  .toolbar {
+    display: flex;
+    gap: 8px;
+    padding: 8px 14px;
+    border-bottom: 1px solid #d0cfc7;
+    background: #fafaf5;
+    align-items: center;
+  }
+  button, .btn {
+    padding: 5px 12px;
+    background: #ffffff;
+    border: 1px solid #d0cfc7;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #1a1a1a;
+  }
+  button:hover { background: #f5f5f0; }
+  input, select {
+    padding: 5px 8px;
+    border: 1px solid #d0cfc7;
+    border-radius: 4px;
+    font-size: 13px;
+    background: #ffffff;
+  }
+  table { width: 100%; font-size: 13px; border-collapse: collapse; }
+  th { background: #fafaf5; text-align: left; padding: 8px 14px; font-weight: 500; border-bottom: 1px solid #d0cfc7; }
+  td { padding: 6px 14px; border-bottom: 1px solid #eae9e2; }
+  .row-danger { background: #fceaea; color: #791F1F; }
+  .row-warning { background: #faeeda; color: #633806; }
+  .row-danger td, .row-warning td { color: inherit; }
+  .status-ok { color: #0F6E56; }
+  .status-danger { color: #791F1F; }
+  .status-warning { color: #633806; }
+  .form-container {
+    background: #fafaf5;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: center;
+  }
+  .form-window {
+    background: #ffffff;
+    border: 1px solid #d0cfc7;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+  }
+  .form-body { padding: 1.25rem; }
+  .form-grid {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 10px 12px;
+    align-items: center;
+    font-size: 13px;
+  }
+  .form-grid label { color: #6a6a66; }
+  .form-grid input, .form-grid select { width: 100%; }
+  .form-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 1.25rem;
+  }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 1rem;
+  }
+  .stat-card {
+    background: #fafaf5;
+    border-radius: 6px;
+    padding: 12px;
+  }
+  .stat-card.alert {
+    background: #fceaea;
+  }
+  .stat-label { font-size: 12px; color: #6a6a66; margin: 0 0 4px; }
+  .stat-label.alert { color: #791F1F; }
+  .stat-value { font-size: 22px; font-weight: 500; margin: 0; }
+  .stat-value.alert { color: #791F1F; }
+  .info-box {
+    background: #E6F1FB;
+    color: #0C447C;
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin-top: 12px;
+    font-size: 13px;
+  }
+  .search-result {
+    padding: 6px 10px;
+    border-radius: 4px;
+    background: #fafaf5;
+    margin-bottom: 4px;
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .section-intro {
+    background: #E6F1FB;
+    border-left: 3px solid #185FA5;
+    padding: 12px 16px;
+    margin-bottom: 1.5rem;
+    font-size: 14px;
+    color: #0C447C;
+    border-radius: 0 4px 4px 0;
+  }
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #d0cfc7;
+    font-size: 13px;
+    color: #6a6a66;
+    text-align: center;
+  }
+  .task-list li { margin-bottom: 6px; }
+  .code-block {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 14px 16px;
+    border-radius: 6px;
+    font-family: "SF Mono", Monaco, Consolas, "Courier New", monospace;
+    font-size: 12.5px;
+    line-height: 1.55;
+    overflow-x: auto;
+    margin: 12px 0;
+    white-space: pre;
+  }
+  .code-block .kw { color: #569cd6; }
+  .code-block .str { color: #ce9178; }
+  .code-block .cm { color: #6a9955; font-style: italic; }
+  .code-block .fn { color: #dcdcaa; }
+  .code-block .ty { color: #4ec9b0; }
+  .code-block .num { color: #b5cea8; }
+  .step-card {
+    background: #ffffff;
+    border: 1px solid #d0cfc7;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .step-card h4 {
+    margin: 0 0 10px;
+    font-size: 15px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #1a1a1a;
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .tip {
+    background: #faeeda;
+    border-left: 3px solid #BA7517;
+    padding: 10px 14px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: #633806;
+    border-radius: 0 4px 4px 0;
+  }
+  .warn {
+    background: #fceaea;
+    border-left: 3px solid #A32D2D;
+    padding: 10px 14px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: #791F1F;
+    border-radius: 0 4px 4px 0;
+  }
+  .method-list {
+    background: #fafaf5;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 13px;
+    margin: 10px 0;
+  }
+  .method-list strong { font-family: "SF Mono", Monaco, Consolas, monospace; font-size: 12.5px; }
+  .person-section-header {
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin: 2rem 0 1rem;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .person-section-header.gabrys { background: #E6F1FB; color: #0C447C; }
+  .person-section-header.adam { background: #E1F5EE; color: #085041; }
+  .person-section-header.krzys { background: #FAEEDA; color: #633806; }
+  .person-section-header.wojtek { background: #EEEDFE; color: #3C3489; }
+  @media print {
+    body { background: white; }
+    .mockup-frame, .card { page-break-inside: avoid; }
+  }
+  @media (max-width: 600px) {
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .form-grid { grid-template-columns: 1fr; }
+    table { font-size: 12px; }
+    th, td { padding: 6px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<header>
+  <h1>System Zarządzania Magazynem</h1>
+  <p class="subtitle">Plan projektu zaliczeniowego · 4 osoby · aplikacja webowa · ASP.NET Core Razor Pages + MySQL</p>
+</header>
+
+<div class="section-intro">
+  <strong>Cel:</strong> Aplikacja webowa do zarządzania magazynem (ASP.NET Core Razor Pages, .NET 10). Zaliczenie z programowania webowego — prosty CRUD z logowaniem, nic ponad to. Każda z 4 osób (Gabryś, Adam, Krzyś, Wojtek) dostaje swoją część.
+</div>
+
+<div class="tip" style="margin-bottom: 1.5rem;"><strong>Dlaczego Razor Pages a nie MVC?</strong> Razor Pages to uproszczona wersja MVC dla prostych stron. Jedna strona = jedna para plików (<code>.cshtml</code> + <code>.cshtml.cs</code>). Ścieżka URL pokrywa się ze ścieżką w folderze — zero konfiguracji routingu. Mniej pojęć do nauczenia, mniej konfliktów w Git przy 4-osobowej grupie.</div>
+
+<h2>Stack technologiczny</h2>
+
+<div class="card">
+  <ul>
+    <li><strong>.NET 10 + ASP.NET Core Razor Pages</strong> — framework webowy, jedna strona = jedna para plików</li>
+    <li><strong>MySQL</strong> — baza danych (XAMPP lokalnie)</li>
+    <li><strong>MySqlConnector</strong> — ręczne zapytania SQL <span class="tag">NuGet</span></li>
+    <li><strong>BCrypt.Net-Next</strong> — hashowanie haseł <span class="tag">NuGet</span></li>
+    <li><strong>QuestPDF</strong> — generowanie raportów PDF <span class="tag">NuGet</span></li>
+    <li><strong>Bootstrap 5</strong> — ładny wygląd bez pisania CSS (przychodzi z szablonem)</li>
+    <li><strong>Git + GitHub</strong> — wspólne repozytorium</li>
+  </ul>
+  <div class="tip" style="margin-top: 12px;"><strong>Tylko 3 paczki NuGet.</strong> Bez Entity Framework, bez Identity, bez ViewModeli. Wszystko co się dzieje w bazie — widzicie w kodzie jako SQL. Zero magii.</div>
+</div>
+
+<h2>Struktura projektu (Razor Pages)</h2>
+
+<div class="card">
+<pre style="background: #fafaf5; padding: 12px; border-radius: 4px; font-size: 13px; overflow-x: auto; margin: 0;">Magazyn/
+├── Program.cs                    (konfiguracja - krótki plik)
+├── appsettings.json              (connection string - w .gitignore)
+├── Db.cs                         [Gabryś] helper do SQL
+├── RequireLoginAttribute.cs      [Gabryś] filtr "tylko zalogowani"
+├── database.sql                  [Gabryś] skrypt SQL dla bazy
+│
+├── Models/                       (proste klasy, po jednej na plik)
+│   ├── User.cs                   [Gabryś]
+│   ├── Product.cs                [Adam]
+│   ├── Category.cs               [Adam]
+│   └── Operation.cs              [Krzyś]
+│
+├── Pages/                        ← TU wszystko się dzieje
+│   ├── Shared/
+│   │   └── _Layout.cshtml        [Wojtek] wspólny szablon z menu
+│   │
+│   ├── Index.cshtml(+.cs)        [Wojtek] dashboard
+│   │
+│   ├── Account/                  [Gabryś]
+│   │   ├── Login.cshtml(+.cs)
+│   │   └── Logout.cshtml.cs
+│   │
+│   ├── Admin/                    [Gabryś]
+│   │   ├── Index.cshtml(+.cs)    lista userów
+│   │   ├── Create.cshtml(+.cs)   dodaj usera
+│   │   └── Delete.cshtml(+.cs)   usuń usera
+│   │
+│   ├── Products/                 [Adam]
+│   │   ├── Index.cshtml(+.cs)    lista produktów
+│   │   ├── Create.cshtml(+.cs)   dodaj produkt
+│   │   ├── Edit.cshtml(+.cs)     edytuj produkt
+│   │   └── Delete.cshtml(+.cs)   usuń produkt
+│   │
+│   ├── Categories/               [Adam]
+│   │   └── Index.cshtml(+.cs)    lista + dodawanie + usuwanie
+│   │
+│   ├── Stock/                    [Krzyś]
+│   │   ├── Index.cshtml(+.cs)    stany magazynowe
+│   │   ├── Operation.cshtml(+.cs) przyjęcie / wydanie
+│   │   └── History.cshtml(+.cs)  historia operacji
+│   │
+│   ├── Search/                   [Wojtek]
+│   │   └── Index.cshtml(+.cs)    wyszukiwarka
+│   │
+│   └── Reports/                  [Wojtek]
+│       └── Index.cshtml(+.cs)    generowanie PDF
+│
+└── wwwroot/                      (CSS, JS - generuje szablon)
+    └── css/site.css</pre>
+  <p style="margin-top: 12px; font-size: 13px; color: #6a6a66;">
+    <strong>Magia Razor Pages:</strong> URL <code>/Products/Edit?id=5</code> automatycznie mapuje na <code>Pages/Products/Edit.cshtml</code>. Nie konfigurujecie niczego. Widzicie folder — widzicie jakie są strony.
+  </p>
+  <div class="tip"><strong>Zapis <code>Index.cshtml(+.cs)</code>:</strong> dwa pliki — <code>Index.cshtml</code> (HTML/wygląd) i <code>Index.cshtml.cs</code> (C#/logika). W Visual Studio wyświetlają się jeden pod drugim (ten drugi jest "schowany" pod pierwszym).</div>
+</div>
+
+<h2>Podział pracy</h2>
+
+<div class="card">
+  <div class="person-header">
+    <span class="person-badge gabrys">Gabryś</span>
+    <strong>Fundamenty · Logowanie · Panel admina</strong>
+  </div>
+  <p style="font-size: 14px; color: #444; margin-bottom: 12px;"><em>Robi pierwszy — reszta na tym buduje.</em></p>
+  <ul class="task-list">
+    <li>Setup projektu: <code>dotnet new webapp</code>, dodanie paczek NuGet, <code>.gitignore</code>, README</li>
+    <li>Plik <code>database.sql</code> — tabele <code>users</code>, <code>categories</code>, <code>products</code>, <code>operations</code></li>
+    <li>Klasa <code>Db.cs</code> — helper z metodami <code>Query()</code>, <code>Exec()</code>, <code>Scalar()</code></li>
+    <li>Klasa <code>RequireLoginAttribute.cs</code> — filtr sprawdzający sesję</li>
+    <li><code>Pages/Account/Login.cshtml</code> + <code>.cs</code> — strona logowania (BCrypt do weryfikacji)</li>
+    <li><code>Pages/Account/Logout.cshtml.cs</code> — wylogowanie (czyści sesję)</li>
+    <li><code>Pages/Admin/Index.cshtml</code> + <code>.cs</code> — lista użytkowników</li>
+    <li><code>Pages/Admin/Create.cshtml</code> + <code>.cs</code> — dodawanie usera (z hashowaniem hasła)</li>
+    <li><code>Pages/Admin/Delete.cshtml</code> + <code>.cs</code> — usuwanie usera</li>
+    <li>Konfiguracja <code>Program.cs</code>: włączenie Razor Pages i sesji</li>
+    <li>Domyślny admin w bazie: <code>admin</code> / <code>admin123</code> (dodany ręcznie w SQL po zahashowaniu)</li>
+  </ul>
+</div>
+
+<div class="card">
+  <div class="person-header">
+    <span class="person-badge adam">Adam</span>
+    <strong>Produkty · Kategorie</strong>
+  </div>
+  <ul class="task-list">
+    <li>Model <code>Product.cs</code> (proste pola: Id, Name, Sku, CategoryId, Quantity, MinQuantity, Unit, Price)</li>
+    <li>Model <code>Category.cs</code></li>
+    <li><code>Pages/Products/Index.cshtml</code> + <code>.cs</code> — lista z wyszukiwaniem i filtrem kategorii</li>
+    <li><code>Pages/Products/Create.cshtml</code> + <code>.cs</code> — formularz dodawania</li>
+    <li><code>Pages/Products/Edit.cshtml</code> + <code>.cs</code> — edycja</li>
+    <li><code>Pages/Products/Delete.cshtml</code> + <code>.cs</code> — usuwanie z potwierdzeniem</li>
+    <li><code>Pages/Categories/Index.cshtml</code> + <code>.cs</code> — lista + dodawanie + usuwanie (wszystko na jednej stronie)</li>
+    <li>Walidacja: SKU unikalny, cena ≥ 0, nazwa niepusta (atrybuty <code>[Required]</code>, <code>[Range]</code>)</li>
+  </ul>
+</div>
+
+<div class="card">
+  <div class="person-header">
+    <span class="person-badge krzys">Krzyś</span>
+    <strong>Stany magazynowe · Historia · Alerty</strong>
+  </div>
+  <ul class="task-list">
+    <li>Model <code>Operation.cs</code> (Id, ProductId, UserId, Type, Quantity, Note, CreatedAt)</li>
+    <li><code>Pages/Stock/Index.cshtml</code> + <code>.cs</code> — lista stanów z kolorowaniem (czerwony/żółty/zielony)</li>
+    <li><code>Pages/Stock/Operation.cshtml</code> + <code>.cs</code> — formularz przyjęcia/wydania (parametr <code>?type=IN</code> lub <code>OUT</code>)</li>
+    <li>Po operacji: UPDATE products (quantity) + INSERT operations — dwa zapytania po kolei</li>
+    <li><code>Pages/Stock/History.cshtml</code> + <code>.cs</code> — historia z filtrami (daty, typ, user)</li>
+    <li>Walidacja: przy wydaniu sprawdzić czy wystarczy w magazynie</li>
+    <li>Alerty niskich stanów: zapytanie <code>SELECT ... WHERE quantity &lt; min_quantity</code> — używane na dashboardzie Wojtka</li>
+  </ul>
+</div>
+
+<div class="card">
+  <div class="person-header">
+    <span class="person-badge wojtek">Wojtek</span>
+    <strong>Layout · Dashboard · Wyszukiwarka · Raporty PDF</strong>
+  </div>
+  <ul class="task-list">
+    <li><code>Pages/Shared/_Layout.cshtml</code> — wspólny szablon z navbarem Bootstrap, linkami do modułów</li>
+    <li>Nagłówek z zalogowanym userem (pobierany z sesji) + link wyloguj</li>
+    <li><code>Pages/Index.cshtml</code> + <code>.cs</code> — dashboard ze statystykami (liczba produktów, kategorii, alerty, operacje dziś)</li>
+    <li>Na dashboardzie: sekcja z alertami (produkty poniżej minimum)</li>
+    <li><code>Pages/Search/Index.cshtml</code> + <code>.cs</code> — wyszukiwarka globalna (nazwa, SKU, kategoria)</li>
+    <li><code>Pages/Reports/Index.cshtml</code> + <code>.cs</code> — formularz wyboru + generowanie PDF przez QuestPDF</li>
+    <li>3 raporty PDF: stan magazynu, historia operacji, produkty poniżej minimum</li>
+    <li><code>wwwroot/css/site.css</code> — drobne dopracowania stylu</li>
+  </ul>
+</div>
+
+<h2>Jak to zaprogramować — przewodnik krok po kroku</h2>
+
+<div class="section-intro">
+  Konkretne wskazówki co do plików i metod. Pseudokod pokazuje <em>strukturę</em> — logikę piszecie sami, żeby faktycznie się czegoś nauczyć. Każdy znajdzie tu swoją część.
+</div>
+
+<h3>Jak działa Razor Pages (przeczytajcie wszyscy)</h3>
+
+<div class="card">
+  <p>Każda strona to dwa pliki:</p>
+  <ul>
+    <li><code>Pages/Products/Index.cshtml</code> — HTML z kawałkami C# (to co widzi user)</li>
+    <li><code>Pages/Products/Index.cshtml.cs</code> — klasa C# z logiką tej strony</li>
+  </ul>
+
+  <p>URL <code>/Products/Index</code> automatycznie trafia do tej pary plików. URL <code>/Products/Edit?id=5</code> → <code>Pages/Products/Edit.cshtml</code>.</p>
+
+  <p>W pliku <code>.cs</code> klasa dziedziczy z <code>PageModel</code> i ma metody <code>OnGet()</code> (gdy ktoś wchodzi) i <code>OnPost()</code> (gdy wyśle formularz). Parametry z URL są automatycznie mapowane na pola klasy z atrybutem <code>[BindProperty]</code>.</p>
+
+  <p>Najprostszy możliwy przykład:</p>
+
+<div class="code-block"><span class="cm">// Pages/Test.cshtml.cs</span>
+<span class="kw">public class</span> <span class="ty">TestModel</span> : <span class="ty">PageModel</span>
+{
+    <span class="kw">public string</span> Wiadomosc { <span class="kw">get; set;</span> }
+
+    <span class="kw">public void</span> <span class="fn">OnGet</span>()
+    {
+        Wiadomosc = <span class="str">"Cześć!"</span>;
+    }
+}</div>
+
+<div class="code-block"><span class="cm">&lt;!-- Pages/Test.cshtml --&gt;</span>
+<span class="str">@page</span>
+<span class="str">@model</span> TestModel
+
+<span class="kw">&lt;h1&gt;</span>@Model.Wiadomosc<span class="kw">&lt;/h1&gt;</span></div>
+
+  <p>Wejście na <code>/Test</code> pokaże "Cześć!". To cała filozofia.</p>
+</div>
+
+<h3>Fundamenty wspólne (które każdy powinien rozumieć)</h3>
+
+<div class="card">
+  <h4 style="margin-top: 0;">Setup projektu</h4>
+
+<div class="code-block"><span class="cm"># W terminalu:</span>
+dotnet new webapp --name Magazyn
+cd Magazyn
+
+<span class="cm"># Paczki:</span>
+dotnet add package MySqlConnector
+dotnet add package BCrypt.Net-Next
+dotnet add package QuestPDF</div>
+
+  <p><code>dotnet new webapp</code> tworzy pusty projekt Razor Pages z Bootstrapem już w środku. Od razu działa.</p>
+</div>
+
+<div class="card">
+  <h4 style="margin-top: 0;">Connection string — <code>appsettings.json</code></h4>
+
+<div class="code-block">{
+  <span class="str">"ConnectionStrings"</span>: {
+    <span class="str">"MySQL"</span>: <span class="str">"server=localhost;database=magazyn;user=root;password=;"</span>
+  }
+}</div>
+
+  <div class="warn"><strong>UWAGA:</strong> ten plik ląduje w repo bez hasła. Jeśli u kogoś hasło do MySQL jest inne — niech zrobi <code>appsettings.Development.json</code> (zignorowany w <code>.gitignore</code>) i tam nadpisze swoje.</div>
+</div>
+
+<div class="card">
+  <h4 style="margin-top: 0;"><code>Program.cs</code> — konfiguracja (Gabryś)</h4>
+  <p>Krótki plik, większość domyślna. Dodajemy tylko sesje i rejestrujemy naszego helpera Db.</p>
+
+<div class="code-block"><span class="kw">var</span> builder = <span class="ty">WebApplication</span>.<span class="fn">CreateBuilder</span>(args);
+
+builder.Services.<span class="fn">AddRazorPages</span>();
+
+<span class="cm">// Sesja - potrzebna do trzymania zalogowanego usera</span>
+builder.Services.<span class="fn">AddDistributedMemoryCache</span>();
+builder.Services.<span class="fn">AddSession</span>(opt =&gt;
+{
+    opt.IdleTimeout = <span class="ty">TimeSpan</span>.<span class="fn">FromHours</span>(<span class="num">2</span>);
+    opt.Cookie.HttpOnly = <span class="kw">true</span>;
+});
+
+<span class="cm">// Nasz helper do bazy - dostępny wszędzie przez DI</span>
+builder.Services.<span class="fn">AddScoped</span>&lt;<span class="ty">Db</span>&gt;();
+
+<span class="cm">// QuestPDF</span>
+<span class="ty">QuestPDF</span>.<span class="ty">Settings</span>.License = <span class="ty">LicenseType</span>.Community;
+
+<span class="kw">var</span> app = builder.<span class="fn">Build</span>();
+
+app.<span class="fn">UseStaticFiles</span>();
+app.<span class="fn">UseRouting</span>();
+app.<span class="fn">UseSession</span>();          <span class="cm">// WAŻNE: przed UseAuthorization</span>
+app.<span class="fn">UseAuthorization</span>();
+app.<span class="fn">MapRazorPages</span>();
+
+app.<span class="fn">Run</span>();</div>
+</div>
+
+<div class="card">
+  <h4 style="margin-top: 0;"><code>Db.cs</code> — helper SQL (Gabryś)</h4>
+
+<div class="code-block"><span class="kw">using</span> System.Data;
+<span class="kw">using</span> MySqlConnector;
+
+<span class="kw">public class</span> <span class="ty">Db</span>
+{
+    <span class="kw">private readonly string</span> _cs;
+
+    <span class="kw">public</span> <span class="fn">Db</span>(<span class="ty">IConfiguration</span> cfg)
+    {
+        _cs = cfg.<span class="fn">GetConnectionString</span>(<span class="str">"MySQL"</span>);
+    }
+
+    <span class="cm">// SELECT - dla list i wyników</span>
+    <span class="kw">public</span> <span class="ty">DataTable</span> <span class="fn">Query</span>(<span class="kw">string</span> sql, <span class="kw">params</span> <span class="ty">MySqlParameter</span>[] p)
+    {
+        <span class="kw">using var</span> conn = <span class="kw">new</span> <span class="ty">MySqlConnection</span>(_cs);
+        conn.<span class="fn">Open</span>();
+        <span class="kw">using var</span> cmd = <span class="kw">new</span> <span class="ty">MySqlCommand</span>(sql, conn);
+        cmd.Parameters.<span class="fn">AddRange</span>(p);
+        <span class="kw">var</span> dt = <span class="kw">new</span> <span class="ty">DataTable</span>();
+        dt.<span class="fn">Load</span>(cmd.<span class="fn">ExecuteReader</span>());
+        <span class="kw">return</span> dt;
+    }
+
+    <span class="cm">// INSERT / UPDATE / DELETE - zwraca liczbę zmienionych wierszy</span>
+    <span class="kw">public int</span> <span class="fn">Exec</span>(<span class="kw">string</span> sql, <span class="kw">params</span> <span class="ty">MySqlParameter</span>[] p)
+    {
+        <span class="kw">using var</span> conn = <span class="kw">new</span> <span class="ty">MySqlConnection</span>(_cs);
+        conn.<span class="fn">Open</span>();
+        <span class="kw">using var</span> cmd = <span class="kw">new</span> <span class="ty">MySqlCommand</span>(sql, conn);
+        cmd.Parameters.<span class="fn">AddRange</span>(p);
+        <span class="kw">return</span> cmd.<span class="fn">ExecuteNonQuery</span>();
+    }
+
+    <span class="cm">// SELECT zwracający jedną wartość (COUNT, pojedynczy ID, itd.)</span>
+    <span class="kw">public object</span> <span class="fn">Scalar</span>(<span class="kw">string</span> sql, <span class="kw">params</span> <span class="ty">MySqlParameter</span>[] p)
+    {
+        <span class="kw">using var</span> conn = <span class="kw">new</span> <span class="ty">MySqlConnection</span>(_cs);
+        conn.<span class="fn">Open</span>();
+        <span class="kw">using var</span> cmd = <span class="kw">new</span> <span class="ty">MySqlCommand</span>(sql, conn);
+        cmd.Parameters.<span class="fn">AddRange</span>(p);
+        <span class="kw">return</span> cmd.<span class="fn">ExecuteScalar</span>();
+    }
+}</div>
+
+  <p>Używanie w stronie: w konstruktorze <code>PageModel</code> przyjmujemy <code>Db db</code> — ASP.NET wstrzyknie sam.</p>
+
+  <div class="warn"><strong>ZAWSZE parametryzowane zapytania!</strong> Nigdy nie sklejaj SQL-a ze stringów (<code>"WHERE id = " + userInput</code>) — to luka SQL Injection. Używaj <code>@id</code> i <code>new MySqlParameter("@id", id)</code>.</div>
+</div>
+
+<div class="card">
+  <h4 style="margin-top: 0;"><code>RequireLoginAttribute.cs</code> — ochrona stron (Gabryś)</h4>
+
+<div class="code-block"><span class="kw">using</span> Microsoft.AspNetCore.Mvc;
+<span class="kw">using</span> Microsoft.AspNetCore.Mvc.Filters;
+
+<span class="kw">public class</span> <span class="ty">RequireLoginAttribute</span> : <span class="ty">ActionFilterAttribute</span>
+{
+    <span class="kw">public override void</span> <span class="fn">OnPageHandlerExecuting</span>(<span class="ty">PageHandlerExecutingContext</span> ctx)
+    {
+        <span class="kw">if</span> (ctx.HttpContext.Session.<span class="fn">GetInt32</span>(<span class="str">"UserId"</span>) == <span class="kw">null</span>)
+        {
+            ctx.Result = <span class="kw">new</span> <span class="ty">RedirectToPageResult</span>(<span class="str">"/Account/Login"</span>);
+        }
+    }
+}</div>
+
+  <p>Używanie: dopisujesz <code>[RequireLogin]</code> nad klasą <code>PageModel</code>. Jeśli user nie zalogowany — przekierowanie na login.</p>
+
+<div class="code-block"><span class="kw">[RequireLogin]</span>
+<span class="kw">public class</span> <span class="ty">IndexModel</span> : <span class="ty">PageModel</span>
+{
+    <span class="cm">// ...</span>
+}</div>
+</div>
+
+<!-- GABRYŚ -->
+<div class="person-section-header gabrys">Gabryś — Fundamenty, Logowanie, Panel admina</div>
+
+<div class="step-card">
+  <h4><span class="step-num">1</span> Schemat bazy — <code>database.sql</code></h4>
+
+<div class="code-block"><span class="kw">CREATE DATABASE</span> magazyn <span class="kw">CHARACTER SET</span> utf8mb4;
+<span class="kw">USE</span> magazyn;
+
+<span class="kw">CREATE TABLE</span> users (
+    id <span class="ty">INT AUTO_INCREMENT PRIMARY KEY</span>,
+    login <span class="ty">VARCHAR</span>(<span class="num">50</span>) <span class="kw">UNIQUE NOT NULL</span>,
+    password_hash <span class="ty">VARCHAR</span>(<span class="num">255</span>) <span class="kw">NOT NULL</span>,
+    role <span class="ty">VARCHAR</span>(<span class="num">20</span>) <span class="kw">DEFAULT</span> <span class="str">'pracownik'</span>,
+    created_at <span class="ty">DATETIME DEFAULT CURRENT_TIMESTAMP</span>
+);
+
+<span class="kw">CREATE TABLE</span> categories (
+    id <span class="ty">INT AUTO_INCREMENT PRIMARY KEY</span>,
+    name <span class="ty">VARCHAR</span>(<span class="num">100</span>) <span class="kw">UNIQUE NOT NULL</span>
+);
+
+<span class="kw">CREATE TABLE</span> products (
+    id <span class="ty">INT AUTO_INCREMENT PRIMARY KEY</span>,
+    name <span class="ty">VARCHAR</span>(<span class="num">200</span>) <span class="kw">NOT NULL</span>,
+    sku <span class="ty">VARCHAR</span>(<span class="num">50</span>) <span class="kw">UNIQUE NOT NULL</span>,
+    category_id <span class="ty">INT</span>,
+    quantity <span class="ty">INT DEFAULT</span> <span class="num">0</span>,
+    min_quantity <span class="ty">INT DEFAULT</span> <span class="num">0</span>,
+    unit <span class="ty">VARCHAR</span>(<span class="num">20</span>) <span class="kw">DEFAULT</span> <span class="str">'szt.'</span>,
+    price <span class="ty">DECIMAL</span>(<span class="num">10,2</span>) <span class="kw">DEFAULT</span> <span class="num">0</span>,
+    <span class="kw">FOREIGN KEY</span> (category_id) <span class="kw">REFERENCES</span> categories(id)
+);
+
+<span class="kw">CREATE TABLE</span> operations (
+    id <span class="ty">INT AUTO_INCREMENT PRIMARY KEY</span>,
+    product_id <span class="ty">INT NOT NULL</span>,
+    user_id <span class="ty">INT NOT NULL</span>,
+    type <span class="ty">ENUM</span>(<span class="str">'IN'</span>, <span class="str">'OUT'</span>) <span class="kw">NOT NULL</span>,
+    quantity <span class="ty">INT NOT NULL</span>,
+    note <span class="ty">VARCHAR</span>(<span class="num">255</span>),
+    created_at <span class="ty">DATETIME DEFAULT CURRENT_TIMESTAMP</span>,
+    <span class="kw">FOREIGN KEY</span> (product_id) <span class="kw">REFERENCES</span> products(id),
+    <span class="kw">FOREIGN KEY</span> (user_id) <span class="kw">REFERENCES</span> users(id)
+);
+
+<span class="cm">-- Domyślny admin (login: admin, hasło: admin123)</span>
+<span class="cm">-- Hash wygenerujcie w C#: BCrypt.Net.BCrypt.HashPassword("admin123")</span>
+<span class="cm">-- i wklejcie tutaj:</span>
+<span class="kw">INSERT INTO</span> users (login, password_hash, role) <span class="kw">VALUES</span>
+  (<span class="str">'admin'</span>, <span class="str">'TUTAJ_HASH'</span>, <span class="str">'admin'</span>);</div>
+
+  <div class="tip"><strong>Wygenerowanie hasha:</strong> zrób mały programik konsolowy z linijką <code>Console.WriteLine(BCrypt.Net.BCrypt.HashPassword("admin123"))</code> albo odpal raz w aplikacji i podejrzyj w debuggerze. Wstaw wynik do INSERTa.</div>
+</div>
+
+<div class="step-card">
+  <h4><span class="step-num">2</span> Strona logowania — <code>Pages/Account/Login.cshtml</code></h4>
+
+<div class="code-block"><span class="cm">&lt;!-- Login.cshtml --&gt;</span>
+<span class="str">@page</span>
+<span class="str">@model</span> LoginModel
+
+<span class="kw">&lt;div</span> class=<span class="str">"col-md-4 mx-auto mt-5"</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;h2&gt;</span>Logowanie<span class="kw">&lt;/h2&gt;</span>
+
+    <span class="kw">&lt;form</span> method=<span class="str">"post"</span><span class="kw">&gt;</span>
+        <span class="kw">&lt;div</span> class=<span class="str">"mb-3"</span><span class="kw">&gt;</span>
+            <span class="kw">&lt;label&gt;</span>Login<span class="kw">&lt;/label&gt;</span>
+            <span class="kw">&lt;input</span> asp-for=<span class="str">"Login"</span> class=<span class="str">"form-control"</span> /<span class="kw">&gt;</span>
+        <span class="kw">&lt;/div&gt;</span>
+        <span class="kw">&lt;div</span> class=<span class="str">"mb-3"</span><span class="kw">&gt;</span>
+            <span class="kw">&lt;label&gt;</span>Hasło<span class="kw">&lt;/label&gt;</span>
+            <span class="kw">&lt;input</span> asp-for=<span class="str">"Haslo"</span> type=<span class="str">"password"</span> class=<span class="str">"form-control"</span> /<span class="kw">&gt;</span>
+        <span class="kw">&lt;/div&gt;</span>
+
+        <span class="str">@if</span> (!<span class="kw">string</span>.<span class="fn">IsNullOrEmpty</span>(Model.Blad)) {
+            <span class="kw">&lt;div</span> class=<span class="str">"alert alert-danger"</span><span class="kw">&gt;</span>@Model.Blad<span class="kw">&lt;/div&gt;</span>
+        }
+
+        <span class="kw">&lt;button</span> class=<span class="str">"btn btn-primary"</span><span class="kw">&gt;</span>Zaloguj<span class="kw">&lt;/button&gt;</span>
+    <span class="kw">&lt;/form&gt;</span>
+<span class="kw">&lt;/div&gt;</span></div>
+
+<div class="code-block"><span class="cm">// Login.cshtml.cs</span>
+<span class="kw">public class</span> <span class="ty">LoginModel</span> : <span class="ty">PageModel</span>
+{
+    <span class="kw">private readonly</span> <span class="ty">Db</span> _db;
+
+    <span class="kw">public</span> <span class="fn">LoginModel</span>(<span class="ty">Db</span> db) { _db = db; }
+
+    <span class="kw">[BindProperty]</span> <span class="kw">public string</span> Login { <span class="kw">get; set;</span> }
+    <span class="kw">[BindProperty]</span> <span class="kw">public string</span> Haslo { <span class="kw">get; set;</span> }
+    <span class="kw">public string</span> Blad { <span class="kw">get; set;</span> }
+
+    <span class="kw">public void</span> <span class="fn">OnGet</span>() { }
+
+    <span class="kw">public</span> <span class="ty">IActionResult</span> <span class="fn">OnPost</span>()
+    {
+        <span class="kw">var</span> dt = _db.<span class="fn">Query</span>(
+            <span class="str">"SELECT * FROM users WHERE login = @l"</span>,
+            <span class="kw">new</span> <span class="ty">MySqlParameter</span>(<span class="str">"@l"</span>, Login));
+
+        <span class="kw">if</span> (dt.Rows.Count == <span class="num">0</span>)
+        {
+            Blad = <span class="str">"Nie ma takiego użytkownika"</span>;
+            <span class="kw">return</span> <span class="fn">Page</span>();
+        }
+
+        <span class="kw">var</span> row = dt.Rows[<span class="num">0</span>];
+        <span class="kw">string</span> hash = row[<span class="str">"password_hash"</span>].<span class="fn">ToString</span>();
+
+        <span class="kw">if</span> (!<span class="ty">BCrypt.Net.BCrypt</span>.<span class="fn">Verify</span>(Haslo, hash))
+        {
+            Blad = <span class="str">"Złe hasło"</span>;
+            <span class="kw">return</span> <span class="fn">Page</span>();
+        }
+
+        <span class="cm">// Zapisz usera w sesji</span>
+        HttpContext.Session.<span class="fn">SetInt32</span>(<span class="str">"UserId"</span>, (<span class="kw">int</span>)row[<span class="str">"id"</span>]);
+        HttpContext.Session.<span class="fn">SetString</span>(<span class="str">"Login"</span>, Login);
+        HttpContext.Session.<span class="fn">SetString</span>(<span class="str">"Rola"</span>, row[<span class="str">"role"</span>].<span class="fn">ToString</span>());
+
+        <span class="kw">return</span> <span class="fn">RedirectToPage</span>(<span class="str">"/Index"</span>);
+    }
+}</div>
+</div>
+
+<div class="step-card">
+  <h4><span class="step-num">3</span> Wylogowanie — <code>Pages/Account/Logout.cshtml.cs</code></h4>
+
+<div class="code-block"><span class="kw">public class</span> <span class="ty">LogoutModel</span> : <span class="ty">PageModel</span>
+{
+    <span class="kw">public</span> <span class="ty">IActionResult</span> <span class="fn">OnGet</span>()
+    {
+        HttpContext.Session.<span class="fn">Clear</span>();
+        <span class="kw">return</span> <span class="fn">RedirectToPage</span>(<span class="str">"/Account/Login"</span>);
+    }
+}</div>
+
+  <p>Nie ma <code>.cshtml</code> — wystarczy sama metoda, która czyści sesję i przekierowuje.</p>
+</div>
+
+<div class="step-card">
+  <h4><span class="step-num">4</span> Panel admina — lista userów</h4>
+
+<div class="code-block"><span class="cm">// Pages/Admin/Index.cshtml.cs</span>
+<span class="kw">[RequireLogin]</span>
+<span class="kw">public class</span> <span class="ty">IndexModel</span> : <span class="ty">PageModel</span>
+{
+    <span class="kw">private readonly</span> <span class="ty">Db</span> _db;
+    <span class="kw">public</span> <span class="ty">DataTable</span> Users { <span class="kw">get; set;</span> }
+
+    <span class="kw">public</span> <span class="fn">IndexModel</span>(<span class="ty">Db</span> db) { _db = db; }
+
+    <span class="kw">public</span> <span class="ty">IActionResult</span> <span class="fn">OnGet</span>()
+    {
+        <span class="cm">// Dodatkowe sprawdzenie że to admin</span>
+        <span class="kw">if</span> (HttpContext.Session.<span class="fn">GetString</span>(<span class="str">"Rola"</span>) != <span class="str">"admin"</span>)
+            <span class="kw">return</span> <span class="fn">RedirectToPage</span>(<span class="str">"/Index"</span>);
+
+        Users = _db.<span class="fn">Query</span>(<span class="str">"SELECT id, login, role, created_at FROM users"</span>);
+        <span class="kw">return</span> <span class="fn">Page</span>();
+    }
+}</div>
+
+<div class="code-block"><span class="cm">&lt;!-- Pages/Admin/Index.cshtml --&gt;</span>
+<span class="str">@page</span>
+<span class="str">@model</span> IndexModel
+
+<span class="kw">&lt;h1&gt;</span>Użytkownicy<span class="kw">&lt;/h1&gt;</span>
+<span class="kw">&lt;a</span> asp-page=<span class="str">"Create"</span> class=<span class="str">"btn btn-success mb-3"</span><span class="kw">&gt;</span>+ Dodaj użytkownika<span class="kw">&lt;/a&gt;</span>
+
+<span class="kw">&lt;table</span> class=<span class="str">"table"</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;thead&gt;&lt;tr&gt;</span>
+        <span class="kw">&lt;th&gt;</span>ID<span class="kw">&lt;/th&gt;&lt;th&gt;</span>Login<span class="kw">&lt;/th&gt;&lt;th&gt;</span>Rola<span class="kw">&lt;/th&gt;&lt;th&gt;&lt;/th&gt;</span>
+    <span class="kw">&lt;/tr&gt;&lt;/thead&gt;</span>
+    <span class="kw">&lt;tbody&gt;</span>
+    <span class="str">@foreach</span> (<span class="ty">DataRow</span> r <span class="kw">in</span> Model.Users.Rows) {
+        <span class="kw">&lt;tr&gt;</span>
+            <span class="kw">&lt;td&gt;</span>@r[<span class="str">"id"</span>]<span class="kw">&lt;/td&gt;</span>
+            <span class="kw">&lt;td&gt;</span>@r[<span class="str">"login"</span>]<span class="kw">&lt;/td&gt;</span>
+            <span class="kw">&lt;td&gt;</span>@r[<span class="str">"role"</span>]<span class="kw">&lt;/td&gt;</span>
+            <span class="kw">&lt;td&gt;</span>
+                <span class="kw">&lt;a</span> asp-page=<span class="str">"Delete"</span> asp-route-id=<span class="str">"@r["</span>id<span class="str">"]"</span> class=<span class="str">"btn btn-sm btn-danger"</span><span class="kw">&gt;</span>Usuń<span class="kw">&lt;/a&gt;</span>
+            <span class="kw">&lt;/td&gt;</span>
+        <span class="kw">&lt;/tr&gt;</span>
+    }
+    <span class="kw">&lt;/tbody&gt;</span>
+<span class="kw">&lt;/table&gt;</span></div>
+
+  <div class="warn"><strong>Pamiętaj:</strong> nie pozwól usunąć ostatniego admina. Sprawdź <code>SELECT COUNT(*) FROM users WHERE role='admin'</code> przed DELETE.</div>
+</div>
+
+<!-- ADAM -->
+<div class="person-section-header adam">Adam — Produkty, Kategorie</div>
+
+<div class="step-card">
+  <h4><span class="step-num">1</span> Model <code>Product.cs</code></h4>
+
+<div class="code-block"><span class="cm">// Models/Product.cs</span>
+<span class="kw">using</span> System.ComponentModel.DataAnnotations;
+
+<span class="kw">public class</span> <span class="ty">Product</span>
+{
+    <span class="kw">public int</span> Id { <span class="kw">get; set;</span> }
+
+    <span class="kw">[Required(ErrorMessage = </span><span class="str">"Nazwa wymagana"</span><span class="kw">)]</span>
+    <span class="kw">public string</span> Name { <span class="kw">get; set;</span> }
+
+    <span class="kw">[Required]</span>
+    <span class="kw">public string</span> Sku { <span class="kw">get; set;</span> }
+
+    <span class="kw">public int</span>? CategoryId { <span class="kw">get; set;</span> }
+
+    <span class="kw">[Range(0, int.MaxValue, ErrorMessage = </span><span class="str">"Ilość ≥ 0"</span><span class="kw">)]</span>
+    <span class="kw">public int</span> Quantity { <span class="kw">get; set;</span> }
+
+    <span class="kw">[Range(0, int.MaxValue)]</span>
+    <span class="kw">public int</span> MinQuantity { <span class="kw">get; set;</span> }
+
+    <span class="kw">public string</span> Unit { <span class="kw">get; set;</span> } = <span class="str">"szt."</span>;
+
+    <span class="kw">[Range(0, 999999)]</span>
+    <span class="kw">public decimal</span> Price { <span class="kw">get; set;</span> }
+}</div>
+</div>
+
+<div class="step-card">
+  <h4><span class="step-num">2</span> Lista produktów — <code>Pages/Products/Index.cshtml</code></h4>
+
+<div class="code-block"><span class="cm">// Index.cshtml.cs</span>
+<span class="kw">[RequireLogin]</span>
+<span class="kw">public class</span> <span class="ty">IndexModel</span> : <span class="ty">PageModel</span>
+{
+    <span class="kw">private readonly</span> <span class="ty">Db</span> _db;
+    <span class="kw">public</span> <span class="ty">DataTable</span> Produkty { <span class="kw">get; set;</span> }
+    <span class="kw">public string</span> Szukaj { <span class="kw">get; set;</span> }
+
+    <span class="kw">public</span> <span class="fn">IndexModel</span>(<span class="ty">Db</span> db) { _db = db; }
+
+    <span class="kw">public void</span> <span class="fn">OnGet</span>(<span class="kw">string</span> szukaj)
+    {
+        Szukaj = szukaj ?? <span class="str">""</span>;
+
+        Produkty = _db.<span class="fn">Query</span>(<span class="str">@"
+            SELECT p.id, p.name, p.sku, p.quantity, p.min_quantity, p.price,
+                   c.name AS category_name
+            FROM products p
+            LEFT JOIN categories c ON p.category_id = c.id
+            WHERE (@q = '' OR p.name LIKE @like OR p.sku LIKE @like)
+            ORDER BY p.name"</span>,
+            <span class="kw">new</span> <span class="ty">MySqlParameter</span>(<span class="str">"@q"</span>, Szukaj),
+            <span class="kw">new</span> <span class="ty">MySqlParameter</span>(<span class="str">"@like"</span>, <span class="str">"%"</span> + Szukaj + <span class="str">"%"</span>));
+    }
+}</div>
+
+<div class="code-block"><span class="cm">&lt;!-- Index.cshtml --&gt;</span>
+<span class="str">@page</span>
+<span class="str">@model</span> IndexModel
+
+<span class="kw">&lt;h1&gt;</span>Produkty<span class="kw">&lt;/h1&gt;</span>
+
+<span class="kw">&lt;form</span> method=<span class="str">"get"</span> class=<span class="str">"d-flex gap-2 mb-3"</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;input</span> name=<span class="str">"szukaj"</span> value=<span class="str">"@Model.Szukaj"</span> class=<span class="str">"form-control"</span> placeholder=<span class="str">"Szukaj..."</span> /<span class="kw">&gt;</span>
+    <span class="kw">&lt;button</span> class=<span class="str">"btn btn-primary"</span><span class="kw">&gt;</span>Szukaj<span class="kw">&lt;/button&gt;</span>
+    <span class="kw">&lt;a</span> asp-page=<span class="str">"Create"</span> class=<span class="str">"btn btn-success"</span><span class="kw">&gt;</span>+ Dodaj<span class="kw">&lt;/a&gt;</span>
+<span class="kw">&lt;/form&gt;</span>
+
+<span class="kw">&lt;table</span> class=<span class="str">"table table-hover"</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;thead&gt;&lt;tr&gt;</span>
+        <span class="kw">&lt;th&gt;</span>Nazwa<span class="kw">&lt;/th&gt;&lt;th&gt;</span>SKU<span class="kw">&lt;/th&gt;&lt;th&gt;</span>Kategoria<span class="kw">&lt;/th&gt;</span>
+        <span class="kw">&lt;th&gt;</span>Ilość<span class="kw">&lt;/th&gt;&lt;th&gt;</span>Cena<span class="kw">&lt;/th&gt;&lt;th&gt;&lt;/th&gt;</span>
+    <span class="kw">&lt;/tr&gt;&lt;/thead&gt;</span>
+    <span class="kw">&lt;tbody&gt;</span>
+    <span class="str">@foreach</span> (<span class="ty">DataRow</span> r <span class="kw">in</span> Model.Produkty.Rows) {
+        <span class="kw">var</span> niski = (<span class="kw">int</span>)r[<span class="str">"quantity"</span>] &lt; (<span class="kw">int</span>)r[<span class="str">"min_quantity"</span>];
+        <span class="kw">&lt;tr</span> class=<span class="str">"@(niski ? "</span>table-danger<span class="str">" : "</span><span class="str">")"</span><span class="kw">&gt;</span>
+            <span class="kw">&lt;td&gt;</span>@r[<span class="str">"name"</span>]<span class="kw">&lt;/td&gt;</span>
+            <span class="kw">&lt;td&gt;</span>@r[<span class="str">"sku"</span>]<span class="kw">&lt;/td&gt;</span>
+            <span class="kw">&lt;td&gt;</span>@r[<span class="str">"category_name"</span>]<span class="kw">&lt;/td&gt;</span>
+            <span class="kw">&lt;td&gt;</span>@r[<span class="str">"quantity"</span>]<span class="kw">&lt;/td&gt;</span>
+            <span class="kw">&lt;td&gt;</span>@r[<span class="str">"price"</span>] zł<span class="kw">&lt;/td&gt;</span>
+            <span class="kw">&lt;td&gt;</span>
+                <span class="kw">&lt;a</span> asp-page=<span class="str">"Edit"</span> asp-route-id=<span class="str">"@r["</span>id<span class="str">"]"</span><span class="kw">&gt;</span>Edytuj<span class="kw">&lt;/a&gt;</span> |
+                <span class="kw">&lt;a</span> asp-page=<span class="str">"Delete"</span> asp-route-id=<span class="str">"@r["</span>id<span class="str">"]"</span><span class="kw">&gt;</span>Usuń<span class="kw">&lt;/a&gt;</span>
+            <span class="kw">&lt;/td&gt;</span>
+        <span class="kw">&lt;/tr&gt;</span>
+    }
+    <span class="kw">&lt;/tbody&gt;</span>
+<span class="kw">&lt;/table&gt;</span></div>
+</div>
+
+<div class="step-card">
+  <h4><span class="step-num">3</span> Dodawanie produktu — <code>Pages/Products/Create.cshtml</code></h4>
+
+<div class="code-block"><span class="cm">// Create.cshtml.cs</span>
+<span class="kw">[RequireLogin]</span>
+<span class="kw">public class</span> <span class="ty">CreateModel</span> : <span class="ty">PageModel</span>
+{
+    <span class="kw">private readonly</span> <span class="ty">Db</span> _db;
+    <span class="kw">public</span> <span class="fn">CreateModel</span>(<span class="ty">Db</span> db) { _db = db; }
+
+    <span class="kw">[BindProperty]</span> <span class="kw">public</span> <span class="ty">Product</span> Produkt { <span class="kw">get; set;</span> } = <span class="kw">new</span>();
+    <span class="kw">public</span> <span class="ty">DataTable</span> Kategorie { <span class="kw">get; set;</span> }
+
+    <span class="kw">public void</span> <span class="fn">OnGet</span>()
+    {
+        Kategorie = _db.<span class="fn">Query</span>(<span class="str">"SELECT id, name FROM categories ORDER BY name"</span>);
+    }
+
+    <span class="kw">public</span> <span class="ty">IActionResult</span> <span class="fn">OnPost</span>()
+    {
+        <span class="kw">if</span> (!ModelState.IsValid)
+        {
+            <span class="fn">OnGet</span>();  <span class="cm">// wczytaj kategorie znowu</span>
+            <span class="kw">return</span> <span class="fn">Page</span>();
+        }
+
+        <span class="cm">// Sprawdź unikalność SKU</span>
+        <span class="kw">var</span> exists = <span class="ty">Convert</span>.<span class="fn">ToInt32</span>(_db.<span class="fn">Scalar</span>(
+            <span class="str">"SELECT COUNT(*) FROM products WHERE sku = @s"</span>,
+            <span class="kw">new</span> <span class="ty">MySqlParameter</span>(<span class="str">"@s"</span>, Produkt.Sku)));
+
+        <span class="kw">if</span> (exists &gt; <span class="num">0</span>)
+        {
+            ModelState.<span class="fn">AddModelError</span>(<span class="str">"Produkt.Sku"</span>, <span class="str">"SKU już istnieje"</span>);
+            <span class="fn">OnGet</span>();
+            <span class="kw">return</span> <span class="fn">Page</span>();
+        }
+
+        _db.<span class="fn">Exec</span>(<span class="str">@"
+            INSERT INTO products (name, sku, category_id, quantity, min_quantity, unit, price)
+            VALUES (@n, @s, @c, @q, @m, @u, @p)"</span>,
+            <span class="kw">new</span> <span class="ty">MySqlParameter</span>(<span class="str">"@n"</span>, Produkt.Name),
+            <span class="kw">new</span> <span class="ty">MySqlParameter</span>(<span class="str">"@s"</span>, Produkt.Sku),
+            <span class="kw">new</span> <span class="ty">MySqlParameter</span>(<span class="str">"@c"</span>, (<span class="kw">object</span>)Produkt.CategoryId ?? <span class="ty">DBNull</span>.Value),
+            <span class="kw">new</span> <span class="ty">MySqlParameter</span>(<span class="str">"@q"</span>, Produkt.Quantity),
+            <span class="kw">new</span> <span class="ty">MySqlParameter</span>(<span class="str">"@m"</span>, Produkt.MinQuantity),
+            <span class="kw">new</span> <span class="ty">MySqlParameter</span>(<span class="str">"@u"</span>, Produkt.Unit),
+            <span class="kw">new</span> <span class="ty">MySqlParameter</span>(<span class="str">"@p"</span>, Produkt.Price));
+
+        <span class="kw">return</span> <span class="fn">RedirectToPage</span>(<span class="str">"Index"</span>);
+    }
+}</div>
+
+<div class="code-block"><span class="cm">&lt;!-- Create.cshtml --&gt;</span>
+<span class="str">@page</span>
+<span class="str">@model</span> CreateModel
+
+<span class="kw">&lt;h1&gt;</span>Nowy produkt<span class="kw">&lt;/h1&gt;</span>
+
+<span class="kw">&lt;form</span> method=<span class="str">"post"</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;div</span> class=<span class="str">"mb-3"</span><span class="kw">&gt;</span>
+        <span class="kw">&lt;label&gt;</span>Nazwa<span class="kw">&lt;/label&gt;</span>
+        <span class="kw">&lt;input</span> asp-for=<span class="str">"Produkt.Name"</span> class=<span class="str">"form-control"</span> /<span class="kw">&gt;</span>
+        <span class="kw">&lt;span</span> asp-validation-for=<span class="str">"Produkt.Name"</span> class=<span class="str">"text-danger"</span><span class="kw">&gt;&lt;/span&gt;</span>
+    <span class="kw">&lt;/div&gt;</span>
+    <span class="kw">&lt;div</span> class=<span class="str">"mb-3"</span><span class="kw">&gt;</span>
+        <span class="kw">&lt;label&gt;</span>SKU<span class="kw">&lt;/label&gt;</span>
+        <span class="kw">&lt;input</span> asp-for=<span class="str">"Produkt.Sku"</span> class=<span class="str">"form-control"</span> /<span class="kw">&gt;</span>
+        <span class="kw">&lt;span</span> asp-validation-for=<span class="str">"Produkt.Sku"</span> class=<span class="str">"text-danger"</span><span class="kw">&gt;&lt;/span&gt;</span>
+    <span class="kw">&lt;/div&gt;</span>
+    <span class="kw">&lt;div</span> class=<span class="str">"mb-3"</span><span class="kw">&gt;</span>
+        <span class="kw">&lt;label&gt;</span>Kategoria<span class="kw">&lt;/label&gt;</span>
+        <span class="kw">&lt;select</span> asp-for=<span class="str">"Produkt.CategoryId"</span> class=<span class="str">"form-select"</span><span class="kw">&gt;</span>
+            <span class="kw">&lt;option</span> value=<span class="str">""</span><span class="kw">&gt;</span>-- wybierz --<span class="kw">&lt;/option&gt;</span>
+            <span class="str">@foreach</span> (<span class="ty">DataRow</span> k <span class="kw">in</span> Model.Kategorie.Rows) {
+                <span class="kw">&lt;option</span> value=<span class="str">"@k["</span>id<span class="str">"]"</span><span class="kw">&gt;</span>@k[<span class="str">"name"</span>]<span class="kw">&lt;/option&gt;</span>
+            }
+        <span class="kw">&lt;/select&gt;</span>
+    <span class="kw">&lt;/div&gt;</span>
+    <span class="kw">&lt;div</span> class=<span class="str">"mb-3"</span><span class="kw">&gt;</span>
+        <span class="kw">&lt;label&gt;</span>Ilość<span class="kw">&lt;/label&gt;</span>
+        <span class="kw">&lt;input</span> asp-for=<span class="str">"Produkt.Quantity"</span> type=<span class="str">"number"</span> class=<span class="str">"form-control"</span> /<span class="kw">&gt;</span>
+    <span class="kw">&lt;/div&gt;</span>
+    <span class="cm">&lt;!-- podobnie MinQuantity, Unit, Price --&gt;</span>
+
+    <span class="kw">&lt;button</span> class=<span class="str">"btn btn-primary"</span><span class="kw">&gt;</span>Zapisz<span class="kw">&lt;/button&gt;</span>
+    <span class="kw">&lt;a</span> asp-page=<span class="str">"Index"</span> class=<span class="str">"btn btn-secondary"</span><span class="kw">&gt;</span>Anuluj<span class="kw">&lt;/a&gt;</span>
+<span class="kw">&lt;/form&gt;</span></div>
+
+  <div class="tip"><strong>Edit i Delete</strong> robisz na tym samym wzorze — kod jest prawie identyczny. Edit dodatkowo w <code>OnGet(int id)</code> ładuje istniejący produkt z bazy do <code>Produkt</code>.</div>
+</div>
+
+<!-- KRZYŚ -->
+<div class="person-section-header krzys">Krzyś — Stany, Operacje, Historia</div>
+
+<div class="step-card">
+  <h4><span class="step-num">1</span> Lista stanów — <code>Pages/Stock/Index.cshtml</code></h4>
+
+<div class="code-block"><span class="cm">// Index.cshtml.cs</span>
+<span class="kw">[RequireLogin]</span>
+<span class="kw">public class</span> <span class="ty">IndexModel</span> : <span class="ty">PageModel</span>
+{
+    <span class="kw">private readonly</span> <span class="ty">Db</span> _db;
+    <span class="kw">public</span> <span class="ty">DataTable</span> Stany { <span class="kw">get; set;</span> }
+
+    <span class="kw">public</span> <span class="fn">IndexModel</span>(<span class="ty">Db</span> db) { _db = db; }
+
+    <span class="kw">public void</span> <span class="fn">OnGet</span>()
+    {
+        Stany = _db.<span class="fn">Query</span>(<span class="str">@"
+            SELECT p.id, p.name, p.quantity, p.min_quantity,
+                   CASE
+                     WHEN p.quantity &lt; p.min_quantity THEN 'NISKI'
+                     WHEN p.quantity &lt; p.min_quantity * 1.2 THEN 'BLISKO'
+                     ELSE 'OK'
+                   END AS status
+            FROM products p
+            ORDER BY (p.quantity &lt; p.min_quantity) DESC, p.name"</span>);
+    }
+}</div>
+
+  <p>W widoku koloruj wiersze na podstawie kolumny <code>status</code>:</p>
+
+<div class="code-block"><span class="str">@foreach</span> (<span class="ty">DataRow</span> r <span class="kw">in</span> Model.Stany.Rows) {
+    <span class="kw">var</span> klasa = r[<span class="str">"status"</span>].<span class="fn">ToString</span>() <span class="kw">switch</span>
+    {
+        <span class="str">"NISKI"</span>  =&gt; <span class="str">"table-danger"</span>,
+        <span class="str">"BLISKO"</span> =&gt; <span class="str">"table-warning"</span>,
+        _ =&gt; <span class="str">""</span>
+    };
+    <span class="kw">&lt;tr</span> class=<span class="str">"@klasa"</span><span class="kw">&gt;</span>
+        <span class="kw">&lt;td&gt;</span>@r[<span class="str">"name"</span>]<span class="kw">&lt;/td&gt;</span>
+        <span class="kw">&lt;td&gt;</span>@r[<span class="str">"quantity"</span>]<span class="kw">&lt;/td&gt;</span>
+        <span class="kw">&lt;td&gt;</span>@r[<span class="str">"min_quantity"</span>]<span class="kw">&lt;/td&gt;</span>
+        <span class="kw">&lt;td&gt;</span>@r[<span class="str">"status"</span>]<span class="kw">&lt;/td&gt;</span>
+    <span class="kw">&lt;/tr&gt;</span>
+}</div>
+</div>
+
+<div class="step-card">
+  <h4><span class="step-num">2</span> Przyjęcie / wydanie — <code>Pages/Stock/Operation.cshtml</code></h4>
+  <p>Jedna strona dla obu operacji — parametr <code>?type=IN</code> lub <code>?type=OUT</code> w URL.</p>
+
+<div class="code-block"><span class="cm">// Operation.cshtml.cs</span>
+<span class="kw">[RequireLogin]</span>
+<span class="kw">public class</span> <span class="ty">OperationModel</span> : <span class="ty">PageModel</span>
+{
+    <span class="kw">private readonly</span> <span class="ty">Db</span> _db;
+    <span class="kw">public</span> <span class="fn">OperationModel</span>(<span class="ty">Db</span> db) { _db = db; }
+
+    <span class="kw">[BindProperty]</span> <span class="kw">public int</span> ProductId { <span class="kw">get; set;</span> }
+    <span class="kw">[BindProperty]</span> <span class="kw">public int</span> Quantity { <span class="kw">get; set;</span> }
+    <span class="kw">[BindProperty]</span> <span class="kw">public string</span> Note { <span class="kw">get; set;</span> }
+    <span class="kw">[BindProperty(SupportsGet = true)]</span> <span class="kw">public string</span> Type { <span class="kw">get; set;</span> } = <span class="str">"IN"</span>;
+
+    <span class="kw">public</span> <span class="ty">DataTable</span> Produkty { <span class="kw">get; set;</span> }
+    <span class="kw">public string</span> Blad { <span class="kw">get; set;</span> }
+
+    <span class="kw">public void</span> <span class="fn">OnGet</span>()
+    {
+        Produkty = _db.<span class="fn">Query</span>(<span class="str">"SELECT id, name, quantity FROM products ORDER BY name"</span>);
+    }
+
+    <span class="kw">public</span> <span class="ty">IActionResult</span> <span class="fn">OnPost</span>()
+    {
+        <span class="cm">// Dla wydania - sprawdź czy wystarczy</span>
+        <span class="kw">if</span> (Type == <span class="str">"OUT"</span>)
+        {
+            <span class="kw">var</span> obecna = <span class="ty">Convert</span>.<span class="fn">ToInt32</span>(_db.<span class="fn">Scalar</span>(
+                <span class="str">"SELECT quantity FROM products WHERE id = @id"</span>,
+                <span class="kw">new</span> <span class="ty">MySqlParameter</span>(<span class="str">"@id"</span>, ProductId)));
+
+            <span class="kw">if</span> (obecna &lt; Quantity)
+            {
+                Blad = <span class="str">"Za mało w magazynie!"</span>;
+                <span class="fn">OnGet</span>();
+                <span class="kw">return</span> <span class="fn">Page</span>();
+            }
+        }
+
+        <span class="cm">// 1. Zmień stan produktu</span>
+        <span class="kw">string</span> znak = Type == <span class="str">"IN"</span> ? <span class="str">"+"</span> : <span class="str">"-"</span>;
+        _db.<span class="fn">Exec</span>(
+            $<span class="str">"UPDATE products SET quantity = quantity {znak} @q WHERE id = @id"</span>,
+            <span class="kw">new</span> <span class="ty">MySqlParameter</span>(<span class="str">"@q"</span>, Quantity),
+            <span class="kw">new</span> <span class="ty">MySqlParameter</span>(<span class="str">"@id"</span>, ProductId));
+
+        <span class="cm">// 2. Zapisz do historii</span>
+        _db.<span class="fn">Exec</span>(<span class="str">@"
+            INSERT INTO operations (product_id, user_id, type, quantity, note)
+            VALUES (@p, @u, @t, @q, @n)"</span>,
+            <span class="kw">new</span> <span class="ty">MySqlParameter</span>(<span class="str">"@p"</span>, ProductId),
+            <span class="kw">new</span> <span class="ty">MySqlParameter</span>(<span class="str">"@u"</span>, HttpContext.Session.<span class="fn">GetInt32</span>(<span class="str">"UserId"</span>)),
+            <span class="kw">new</span> <span class="ty">MySqlParameter</span>(<span class="str">"@t"</span>, Type),
+            <span class="kw">new</span> <span class="ty">MySqlParameter</span>(<span class="str">"@q"</span>, Quantity),
+            <span class="kw">new</span> <span class="ty">MySqlParameter</span>(<span class="str">"@n"</span>, Note ?? <span class="str">""</span>));
+
+        <span class="kw">return</span> <span class="fn">RedirectToPage</span>(<span class="str">"Index"</span>);
+    }
+}</div>
+
+  <div class="tip"><strong>Zalogowany user:</strong> <code>HttpContext.Session.GetInt32("UserId")</code> — to Gabryś zapisuje podczas logowania. Tu tylko czytamy.</div>
+</div>
+
+<div class="step-card">
+  <h4><span class="step-num">3</span> Historia — <code>Pages/Stock/History.cshtml</code></h4>
+
+<div class="code-block"><span class="cm">// History.cshtml.cs</span>
+<span class="kw">[RequireLogin]</span>
+<span class="kw">public class</span> <span class="ty">HistoryModel</span> : <span class="ty">PageModel</span>
+{
+    <span class="kw">private readonly</span> <span class="ty">Db</span> _db;
+    <span class="kw">public</span> <span class="fn">HistoryModel</span>(<span class="ty">Db</span> db) { _db = db; }
+
+    <span class="kw">[BindProperty(SupportsGet = true)]</span> <span class="kw">public</span> <span class="ty">DateTime</span>? Od { <span class="kw">get; set;</span> }
+    <span class="kw">[BindProperty(SupportsGet = true)]</span> <span class="kw">public</span> <span class="ty">DateTime</span>? Do { <span class="kw">get; set;</span> }
+    <span class="kw">[BindProperty(SupportsGet = true)]</span> <span class="kw">public string</span> Typ { <span class="kw">get; set;</span> }
+    <span class="kw">public</span> <span class="ty">DataTable</span> Operacje { <span class="kw">get; set;</span> }
+
+    <span class="kw">public void</span> <span class="fn">OnGet</span>()
+    {
+        <span class="kw">var</span> od = Od ?? <span class="ty">DateTime</span>.Today.<span class="fn">AddMonths</span>(-<span class="num">1</span>);
+        <span class="kw">var</span> <span class="fn">do_</span> = Do ?? <span class="ty">DateTime</span>.Today.<span class="fn">AddDays</span>(<span class="num">1</span>);
+
+        Operacje = _db.<span class="fn">Query</span>(<span class="str">@"
+            SELECT o.created_at, o.type, o.quantity, o.note,
+                   p.name AS product_name,
+                   u.login AS user_login
+            FROM operations o
+            JOIN products p ON p.id = o.product_id
+            JOIN users u ON u.id = o.user_id
+            WHERE o.created_at BETWEEN @od AND @do
+              AND (@typ = '' OR o.type = @typ)
+            ORDER BY o.created_at DESC"</span>,
+            <span class="kw">new</span> <span class="ty">MySqlParameter</span>(<span class="str">"@od"</span>, od),
+            <span class="kw">new</span> <span class="ty">MySqlParameter</span>(<span class="str">"@do"</span>, <span class="fn">do_</span>),
+            <span class="kw">new</span> <span class="ty">MySqlParameter</span>(<span class="str">"@typ"</span>, Typ ?? <span class="str">""</span>));
+    }
+}</div>
+
+  <p>W widoku: formularz GET z <code>&lt;input type="date" name="Od"&gt;</code>, <code>&lt;input type="date" name="Do"&gt;</code>, <code>&lt;select name="Typ"&gt;</code>. Po kliknięciu "Filtruj" → nowe parametry w URL → <code>OnGet</code> wywołane z nowymi wartościami.</p>
+</div>
+
+<!-- WOJTEK -->
+<div class="person-section-header wojtek">Wojtek — Layout, Dashboard, Wyszukiwarka, PDF</div>
+
+<div class="step-card">
+  <h4><span class="step-num">1</span> <code>_Layout.cshtml</code> — wspólny szablon</h4>
+  <p>Szablon, który dziedziczą wszystkie strony. Navbar z linkami do modułów, info o zalogowanym userze.</p>
+
+<div class="code-block"><span class="kw">&lt;!DOCTYPE html&gt;</span>
+<span class="kw">&lt;html lang=</span><span class="str">"pl"</span><span class="kw">&gt;</span>
+<span class="kw">&lt;head&gt;</span>
+    <span class="kw">&lt;meta charset=</span><span class="str">"utf-8"</span> /<span class="kw">&gt;</span>
+    <span class="kw">&lt;title&gt;</span>@ViewData[<span class="str">"Title"</span>] - Magazyn<span class="kw">&lt;/title&gt;</span>
+    <span class="kw">&lt;link rel=</span><span class="str">"stylesheet"</span> <span class="kw">href=</span><span class="str">"~/lib/bootstrap/dist/css/bootstrap.min.css"</span> /<span class="kw">&gt;</span>
+    <span class="kw">&lt;link rel=</span><span class="str">"stylesheet"</span> <span class="kw">href=</span><span class="str">"~/css/site.css"</span> /<span class="kw">&gt;</span>
+<span class="kw">&lt;/head&gt;</span>
+<span class="kw">&lt;body&gt;</span>
+    <span class="kw">&lt;nav</span> class=<span class="str">"navbar navbar-expand-lg navbar-dark bg-dark"</span><span class="kw">&gt;</span>
+        <span class="kw">&lt;div</span> class=<span class="str">"container-fluid"</span><span class="kw">&gt;</span>
+            <span class="kw">&lt;a</span> class=<span class="str">"navbar-brand"</span> asp-page=<span class="str">"/Index"</span><span class="kw">&gt;</span>Magazyn<span class="kw">&lt;/a&gt;</span>
+            <span class="kw">&lt;ul</span> class=<span class="str">"navbar-nav me-auto"</span><span class="kw">&gt;</span>
+                <span class="kw">&lt;li&gt;&lt;a</span> class=<span class="str">"nav-link"</span> asp-page=<span class="str">"/Products/Index"</span><span class="kw">&gt;</span>Produkty<span class="kw">&lt;/a&gt;&lt;/li&gt;</span>
+                <span class="kw">&lt;li&gt;&lt;a</span> class=<span class="str">"nav-link"</span> asp-page=<span class="str">"/Stock/Index"</span><span class="kw">&gt;</span>Stany<span class="kw">&lt;/a&gt;&lt;/li&gt;</span>
+                <span class="kw">&lt;li&gt;&lt;a</span> class=<span class="str">"nav-link"</span> asp-page=<span class="str">"/Stock/History"</span><span class="kw">&gt;</span>Historia<span class="kw">&lt;/a&gt;&lt;/li&gt;</span>
+                <span class="kw">&lt;li&gt;&lt;a</span> class=<span class="str">"nav-link"</span> asp-page=<span class="str">"/Reports/Index"</span><span class="kw">&gt;</span>Raporty<span class="kw">&lt;/a&gt;&lt;/li&gt;</span>
+                <span class="str">@if</span> (Context.Session.<span class="fn">GetString</span>(<span class="str">"Rola"</span>) == <span class="str">"admin"</span>) {
+                    <span class="kw">&lt;li&gt;&lt;a</span> class=<span class="str">"nav-link"</span> asp-page=<span class="str">"/Admin/Index"</span><span class="kw">&gt;</span>Admin<span class="kw">&lt;/a&gt;&lt;/li&gt;</span>
+                }
+            <span class="kw">&lt;/ul&gt;</span>
+            <span class="str">@if</span> (Context.Session.<span class="fn">GetString</span>(<span class="str">"Login"</span>) != <span class="kw">null</span>) {
+                <span class="kw">&lt;span</span> class=<span class="str">"navbar-text me-3"</span><span class="kw">&gt;</span>@Context.Session.<span class="fn">GetString</span>(<span class="str">"Login"</span>)<span class="kw">&lt;/span&gt;</span>
+                <span class="kw">&lt;a</span> asp-page=<span class="str">"/Account/Logout"</span> class=<span class="str">"btn btn-outline-light btn-sm"</span><span class="kw">&gt;</span>Wyloguj<span class="kw">&lt;/a&gt;</span>
+            }
+        <span class="kw">&lt;/div&gt;</span>
+    <span class="kw">&lt;/nav&gt;</span>
+
+    <span class="kw">&lt;main</span> class=<span class="str">"container mt-4"</span><span class="kw">&gt;</span>
+        @RenderBody()
+    <span class="kw">&lt;/main&gt;</span>
+
+    <span class="kw">&lt;script src=</span><span class="str">"~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;/body&gt;</span>
+<span class="kw">&lt;/html&gt;</span></div>
+</div>
+
+<div class="step-card">
+  <h4><span class="step-num">2</span> Dashboard — <code>Pages/Index.cshtml</code></h4>
+
+<div class="code-block"><span class="cm">// Index.cshtml.cs</span>
+<span class="kw">[RequireLogin]</span>
+<span class="kw">public class</span> <span class="ty">IndexModel</span> : <span class="ty">PageModel</span>
+{
+    <span class="kw">private readonly</span> <span class="ty">Db</span> _db;
+    <span class="kw">public</span> <span class="fn">IndexModel</span>(<span class="ty">Db</span> db) { _db = db; }
+
+    <span class="kw">public int</span> LiczbaProduktow { <span class="kw">get; set;</span> }
+    <span class="kw">public int</span> LiczbaKategorii { <span class="kw">get; set;</span> }
+    <span class="kw">public int</span> LiczbaAlertow { <span class="kw">get; set;</span> }
+    <span class="kw">public int</span> OperacjeDzis { <span class="kw">get; set;</span> }
+    <span class="kw">public</span> <span class="ty">DataTable</span> Alerty { <span class="kw">get; set;</span> }
+
+    <span class="kw">public void</span> <span class="fn">OnGet</span>()
+    {
+        LiczbaProduktow = <span class="ty">Convert</span>.<span class="fn">ToInt32</span>(_db.<span class="fn">Scalar</span>(<span class="str">"SELECT COUNT(*) FROM products"</span>));
+        LiczbaKategorii = <span class="ty">Convert</span>.<span class="fn">ToInt32</span>(_db.<span class="fn">Scalar</span>(<span class="str">"SELECT COUNT(*) FROM categories"</span>));
+        LiczbaAlertow = <span class="ty">Convert</span>.<span class="fn">ToInt32</span>(_db.<span class="fn">Scalar</span>(
+            <span class="str">"SELECT COUNT(*) FROM products WHERE quantity &lt; min_quantity"</span>));
+        OperacjeDzis = <span class="ty">Convert</span>.<span class="fn">ToInt32</span>(_db.<span class="fn">Scalar</span>(
+            <span class="str">"SELECT COUNT(*) FROM operations WHERE DATE(created_at) = CURDATE()"</span>));
+
+        Alerty = _db.<span class="fn">Query</span>(
+            <span class="str">"SELECT name, quantity, min_quantity FROM products WHERE quantity &lt; min_quantity"</span>);
+    }
+}</div>
+</div>
+
+<div class="step-card">
+  <h4><span class="step-num">3</span> Wyszukiwarka — <code>Pages/Search/Index.cshtml</code></h4>
+
+<div class="code-block"><span class="cm">// Index.cshtml.cs</span>
+<span class="kw">[RequireLogin]</span>
+<span class="kw">public class</span> <span class="ty">IndexModel</span> : <span class="ty">PageModel</span>
+{
+    <span class="kw">private readonly</span> <span class="ty">Db</span> _db;
+    <span class="kw">public</span> <span class="fn">IndexModel</span>(<span class="ty">Db</span> db) { _db = db; }
+
+    <span class="kw">[BindProperty(SupportsGet = true)]</span> <span class="kw">public string</span> Q { <span class="kw">get; set;</span> }
+    <span class="kw">public</span> <span class="ty">DataTable</span> Wyniki { <span class="kw">get; set;</span> }
+
+    <span class="kw">public void</span> <span class="fn">OnGet</span>()
+    {
+        <span class="kw">if</span> (<span class="kw">string</span>.<span class="fn">IsNullOrWhiteSpace</span>(Q)) {
+            Wyniki = <span class="kw">new</span> <span class="ty">DataTable</span>();
+            <span class="kw">return</span>;
+        }
+
+        Wyniki = _db.<span class="fn">Query</span>(<span class="str">@"
+            SELECT p.name, p.sku, p.quantity, c.name AS category_name
+            FROM products p
+            LEFT JOIN categories c ON c.id = p.category_id
+            WHERE p.name LIKE @q OR p.sku LIKE @q OR c.name LIKE @q
+            LIMIT 50"</span>,
+            <span class="kw">new</span> <span class="ty">MySqlParameter</span>(<span class="str">"@q"</span>, <span class="str">"%"</span> + Q + <span class="str">"%"</span>));
+    }
+}</div>
+</div>
+
+<div class="step-card">
+  <h4><span class="step-num">4</span> Raporty PDF — <code>Pages/Reports/Index.cshtml</code></h4>
+  <p>QuestPDF generuje bajty PDF — zwracamy je jako <code>File()</code>, browser pobiera plik.</p>
+
+<div class="code-block"><span class="cm">// Index.cshtml.cs</span>
+<span class="kw">using</span> QuestPDF.Fluent;
+<span class="kw">using</span> QuestPDF.Helpers;
+<span class="kw">using</span> QuestPDF.Infrastructure;
+
+<span class="kw">[RequireLogin]</span>
+<span class="kw">public class</span> <span class="ty">IndexModel</span> : <span class="ty">PageModel</span>
+{
+    <span class="kw">private readonly</span> <span class="ty">Db</span> _db;
+    <span class="kw">public</span> <span class="fn">IndexModel</span>(<span class="ty">Db</span> db) { _db = db; }
+
+    <span class="kw">public void</span> <span class="fn">OnGet</span>() { }
+
+    <span class="cm">// /Reports?handler=Stan</span>
+    <span class="kw">public</span> <span class="ty">IActionResult</span> <span class="fn">OnGetStan</span>()
+    {
+        <span class="kw">var</span> dane = _db.<span class="fn">Query</span>(
+            <span class="str">"SELECT name, sku, quantity, min_quantity FROM products ORDER BY name"</span>);
+
+        <span class="kw">byte</span>[] pdf = <span class="ty">Document</span>.<span class="fn">Create</span>(container =&gt;
+        {
+            container.<span class="fn">Page</span>(page =&gt;
+            {
+                page.<span class="fn">Size</span>(<span class="ty">PageSizes</span>.A4);
+                page.<span class="fn">Margin</span>(<span class="num">2</span>, <span class="ty">Unit</span>.Centimetre);
+
+                page.<span class="fn">Header</span>().<span class="fn">Text</span>($<span class="str">"Stan magazynu — {DateTime.Now:dd.MM.yyyy}"</span>)
+                    .<span class="fn">FontSize</span>(<span class="num">16</span>).<span class="fn">Bold</span>();
+
+                page.<span class="fn">Content</span>().<span class="fn">Table</span>(t =&gt;
+                {
+                    t.<span class="fn">ColumnsDefinition</span>(c =&gt;
+                    {
+                        c.<span class="fn">RelativeColumn</span>(<span class="num">3</span>);
+                        c.<span class="fn">RelativeColumn</span>();
+                        c.<span class="fn">RelativeColumn</span>();
+                        c.<span class="fn">RelativeColumn</span>();
+                    });
+                    t.<span class="fn">Header</span>(h =&gt;
+                    {
+                        h.<span class="fn">Cell</span>().<span class="fn">Text</span>(<span class="str">"Nazwa"</span>).<span class="fn">Bold</span>();
+                        h.<span class="fn">Cell</span>().<span class="fn">Text</span>(<span class="str">"SKU"</span>).<span class="fn">Bold</span>();
+                        h.<span class="fn">Cell</span>().<span class="fn">Text</span>(<span class="str">"Ilość"</span>).<span class="fn">Bold</span>();
+                        h.<span class="fn">Cell</span>().<span class="fn">Text</span>(<span class="str">"Min"</span>).<span class="fn">Bold</span>();
+                    });
+                    <span class="kw">foreach</span> (<span class="ty">DataRow</span> r <span class="kw">in</span> dane.Rows)
+                    {
+                        t.<span class="fn">Cell</span>().<span class="fn">Text</span>(r[<span class="str">"name"</span>].<span class="fn">ToString</span>());
+                        t.<span class="fn">Cell</span>().<span class="fn">Text</span>(r[<span class="str">"sku"</span>].<span class="fn">ToString</span>());
+                        t.<span class="fn">Cell</span>().<span class="fn">Text</span>(r[<span class="str">"quantity"</span>].<span class="fn">ToString</span>());
+                        t.<span class="fn">Cell</span>().<span class="fn">Text</span>(r[<span class="str">"min_quantity"</span>].<span class="fn">ToString</span>());
+                    }
+                });
+
+                page.<span class="fn">Footer</span>().<span class="fn">AlignCenter</span>().<span class="fn">Text</span>(x =&gt;
+                {
+                    x.<span class="fn">Span</span>(<span class="str">"Strona "</span>);
+                    x.<span class="fn">CurrentPageNumber</span>();
+                });
+            });
+        }).<span class="fn">GeneratePdf</span>();
+
+        <span class="kw">return</span> <span class="fn">File</span>(pdf, <span class="str">"application/pdf"</span>, <span class="str">"stan-magazynu.pdf"</span>);
+    }
+
+    <span class="cm">// Podobnie OnGetHistoria(), OnGetAlerty()</span>
+}</div>
+
+<div class="code-block"><span class="cm">&lt;!-- Index.cshtml --&gt;</span>
+<span class="str">@page</span>
+<span class="str">@model</span> IndexModel
+
+<span class="kw">&lt;h1&gt;</span>Raporty PDF<span class="kw">&lt;/h1&gt;</span>
+
+<span class="kw">&lt;div</span> class=<span class="str">"list-group"</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;a</span> asp-page-handler=<span class="str">"Stan"</span> class=<span class="str">"list-group-item list-group-item-action"</span><span class="kw">&gt;</span>
+        📄 Stan magazynu (pobierz PDF)
+    <span class="kw">&lt;/a&gt;</span>
+    <span class="kw">&lt;a</span> asp-page-handler=<span class="str">"Historia"</span> class=<span class="str">"list-group-item list-group-item-action"</span><span class="kw">&gt;</span>
+        📄 Historia operacji (pobierz PDF)
+    <span class="kw">&lt;/a&gt;</span>
+    <span class="kw">&lt;a</span> asp-page-handler=<span class="str">"Alerty"</span> class=<span class="str">"list-group-item list-group-item-action"</span><span class="kw">&gt;</span>
+        📄 Produkty poniżej minimum (pobierz PDF)
+    <span class="kw">&lt;/a&gt;</span>
+<span class="kw">&lt;/div&gt;</span></div>
+
+  <div class="tip"><strong>Jak to działa:</strong> <code>asp-page-handler="Stan"</code> na linku wywoła metodę <code>OnGetStan()</code> zamiast <code>OnGet()</code>. Tak robi się wiele akcji na jednej stronie.</div>
+</div>
+
+<h3>Kolejność pisania</h3>
+
+<div class="card">
+  <ol style="margin: 0; padding-left: 22px;">
+    <li><strong>Gabryś:</strong> <code>dotnet new webapp</code>, baza MySQL, <code>Db.cs</code>, <code>RequireLoginAttribute</code>, <code>Program.cs</code>. Cały szkielet.</li>
+    <li><strong>Gabryś:</strong> strona logowania + admin dodawania userów. Do tego czasu reszta uczy się Razor Pages i klonuje repo.</li>
+    <li><strong>Wojtek:</strong> <code>_Layout.cshtml</code> z linkami do wszystkich stron (nawet jeśli jeszcze nie istnieją) + pusty dashboard. Daje wspólny wygląd.</li>
+    <li><strong>Adam:</strong> najpierw kategorie (potrzebne w formularzu produktu), potem CRUD produktów.</li>
+    <li><strong>Krzyś:</strong> stany, operacje IN/OUT, historia.</li>
+    <li><strong>Wojtek:</strong> wyszukiwarka + raporty PDF + statystyki na dashboardzie (potrzebują bazy z danymi od Adama i Krzysia).</li>
+    <li>Integracja, testy, poprawki CSS.</li>
+  </ol>
+</div>
+
+<h3>Pakiety NuGet — checklista</h3>
+
+<div class="card">
+<div class="code-block">dotnet add package MySqlConnector
+dotnet add package BCrypt.Net-Next
+dotnet add package QuestPDF</div>
+  <p style="font-size: 13px; margin: 10px 0 0;">Lub w Visual Studio: prawy na projekt → Manage NuGet Packages → Browse → wyszukaj i zainstaluj.</p>
+</div>
+
+<h3>Typowe błędy których unikać</h3>
+
+<div class="card">
+  <ul>
+    <li><strong>Konkatenacja stringów w SQL</strong> — <code>"WHERE id = " + id</code> → SQL Injection. Zawsze parametry <code>@id</code> i <code>new MySqlParameter(...)</code>.</li>
+    <li><strong>Zapomnienie <code>[RequireLogin]</code></strong> na stronie — każdy bez logowania może wejść.</li>
+    <li><strong>Zapisywanie haseł plaintextem</strong> — zawsze <code>BCrypt.Net.BCrypt.HashPassword()</code>.</li>
+    <li><strong>Brak <code>app.UseSession()</code> w <code>Program.cs</code></strong> — logowanie nie będzie działać, sesja nie zadziała.</li>
+    <li><strong>Commit <code>appsettings.Development.json</code> z hasłem</strong> — do <code>.gitignore</code>.</li>
+    <li><strong>Brak <code>OnGet()</code> w modelu strony</strong> — strona wyrzuci błąd przy wejściu.</li>
+    <li><strong>Edycja <code>_Layout.cshtml</code> przez 2 osoby naraz</strong> — merge conflict pewny. Uzgadniajcie.</li>
+    <li><strong>Nazwa strony nie pasuje do klasy</strong> — plik <code>Index.cshtml.cs</code> musi mieć klasę <code>IndexModel</code>. Inaczej błąd.</li>
+  </ul>
+</div>
+
+
+<h2>Harmonogram</h2>
+
+<div class="card">
+  <table>
+    <thead>
+      <tr><th style="width: 100px;">Tydzień</th><th>Co się dzieje</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>1</strong></td><td>Gabryś: repo, baza MySQL, Program.cs, Db.cs, logowanie, panel admina. Reszta: nauka Razor Pages z dokumentacji Microsoft Learn.</td></tr>
+      <tr><td><strong>2</strong></td><td>Wszyscy pracują równolegle nad swoimi modułami. PR-y do <code>main</code>.</td></tr>
+      <tr><td><strong>3</strong></td><td>Integracja, testy, poprawki, raporty PDF.</td></tr>
+      <tr><td><strong>4</strong></td><td>Prezentacja / oddanie.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2>GitHub — workflow</h2>
+
+<div class="card">
+  <ul>
+    <li><code>main</code> — chroniony, tylko przez Pull Request</li>
+    <li>Każdy pracuje na swoim branchu: <code>feature/gabrys-login</code>, <code>feature/adam-produkty</code>, itd.</li>
+    <li>PR → review przez minimum 1 osobę → merge</li>
+    <li><code>appsettings.Development.json</code> w <code>.gitignore</code> — każdy ma swój lokalny z hasłem do MySQL</li>
+    <li>W repo zostawcie <code>appsettings.Development.example.json</code> jako wzór do skopiowania</li>
+    <li>Commit messages po polsku lub angielsku, byle konsekwentnie</li>
+  </ul>
+</div>
+
+<h2>Mockupy wszystkich ekranów</h2>
+
+<p style="color: #6a6a66; font-size: 14px;">Każdy ekran podpisany jest kto go robi. To są mockupy — wygląd, nie kod. Kod piszecie sami.</p>
+
+<!-- EKRAN 1: Logowanie -->
+<p class="mockup-label"><span class="person-badge gabrys">Gabryś</span> &nbsp; Logowanie</p>
+<div class="form-container" style="border-radius: 8px; border: 1px solid #d0cfc7; margin-bottom: 2rem;">
+  <div class="form-window" style="max-width: 320px;">
+    <div class="titlebar"><span>Magazyn — logowanie</span><span>— □ ✕</span></div>
+    <div class="form-body" style="padding: 1.5rem;">
+      <h3 style="margin: 0 0 1rem; text-align: center;">Zaloguj się</h3>
+      <label style="font-size: 13px; color: #6a6a66; display: block; margin-bottom: 4px;">Login</label>
+      <input type="text" value="admin" style="width: 100%; margin-bottom: 12px;" />
+      <label style="font-size: 13px; color: #6a6a66; display: block; margin-bottom: 4px;">Hasło</label>
+      <input type="password" value="••••••" style="width: 100%; margin-bottom: 16px;" />
+      <button style="width: 100%;">Zaloguj</button>
+      <p style="font-size: 12px; color: #888; text-align: center; margin: 12px 0 0;">Brak konta? Skontaktuj się z administratorem.</p>
+    </div>
+  </div>
+</div>
+
+<!-- EKRAN 2: Okno główne -->
+<p class="mockup-label"><span class="person-badge wojtek">Wojtek</span> &nbsp; Okno główne</p>
+<div class="mockup-frame">
+  <div class="titlebar"><span>Magazyn v1.0 — zalogowany: admin</span><span>— □ ✕</span></div>
+  <div class="menubar"><span>Plik</span><span>Produkty</span><span>Magazyn</span><span>Raporty</span><span>Admin</span><span>Pomoc</span></div>
+  <div class="toolbar">
+    <button>Produkty</button>
+    <button>Stany</button>
+    <button>Przyjęcie</button>
+    <button>Wydanie</button>
+    <button>Historia</button>
+    <button>Raport PDF</button>
+    <input type="text" placeholder="Szukaj produktu..." style="margin-left: auto; width: 200px;" />
+  </div>
+  <div style="padding: 1.5rem; min-height: 240px;">
+    <h3 style="margin: 0 0 1rem;">Panel główny</h3>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <p class="stat-label">Produktów</p>
+        <p class="stat-value">142</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">Kategorii</p>
+        <p class="stat-value">12</p>
+      </div>
+      <div class="stat-card alert">
+        <p class="stat-label alert">Alerty ⚠</p>
+        <p class="stat-value alert">7</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">Operacji dziś</p>
+        <p class="stat-value">23</p>
+      </div>
+    </div>
+    <p style="font-size: 13px; color: #888; margin: 0;">Pasek statusu: użytkownik admin · połączono z bazą · 19.04.2026</p>
+  </div>
+</div>
+
+<!-- EKRAN 3: Lista produktów -->
+<p class="mockup-label"><span class="person-badge adam">Adam</span> &nbsp; Lista produktów</p>
+<div class="mockup-frame">
+  <div class="titlebar"><span>Produkty</span><span>— □ ✕</span></div>
+  <div class="toolbar">
+    <button>+ Dodaj</button>
+    <button>Edytuj</button>
+    <button>Usuń</button>
+    <button>Kategorie</button>
+    <select style="margin-left: auto;"><option>Wszystkie kategorie</option></select>
+    <input type="text" placeholder="Szukaj..." style="width: 160px;" />
+  </div>
+  <table>
+    <thead>
+      <tr><th>ID</th><th>Nazwa</th><th>SKU</th><th>Kategoria</th><th>Ilość</th><th>Cena</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>Śruba M8</td><td>SR-M8</td><td>Łączniki</td><td>520</td><td>0,45 zł</td></tr>
+      <tr><td>2</td><td>Deska 30×200</td><td>DR-30</td><td>Drewno</td><td>84</td><td>42,00 zł</td></tr>
+      <tr class="row-danger"><td>3</td><td>Wkręt 4×60</td><td>WK-460</td><td>Łączniki</td><td>8 ⚠</td><td>0,80 zł</td></tr>
+      <tr><td>4</td><td>Farba biała 5l</td><td>FB-5</td><td>Chemia</td><td>32</td><td>89,00 zł</td></tr>
+      <tr><td>5</td><td>Kątownik 50×50</td><td>KT-50</td><td>Łączniki</td><td>140</td><td>3,20 zł</td></tr>
+    </tbody>
+  </table>
+  <div style="padding: 8px 14px; font-size: 12px; color: #888; background: #fafaf5;">142 pozycji · czerwone = poniżej stanu minimalnego</div>
+</div>
+
+<!-- EKRAN 4: Dodaj produkt -->
+<p class="mockup-label"><span class="person-badge adam">Adam</span> &nbsp; Dodaj / edytuj produkt</p>
+<div class="form-container" style="border-radius: 8px; border: 1px solid #d0cfc7; margin-bottom: 2rem;">
+  <div class="form-window">
+    <div class="titlebar"><span>Nowy produkt</span><span>— □ ✕</span></div>
+    <div class="form-body">
+      <div class="form-grid">
+        <label>Nazwa</label><input type="text" value="Śruba M8 80mm" />
+        <label>SKU</label><input type="text" value="SR-M8-80" />
+        <label>Kategoria</label><select><option>Łączniki</option></select>
+        <label>Jednostka</label><select><option>szt.</option></select>
+        <label>Ilość</label><input type="number" value="100" />
+        <label>Stan min.</label><input type="number" value="20" />
+        <label>Cena [zł]</label><input type="number" value="0.45" />
+      </div>
+      <div class="form-actions">
+        <button>Anuluj</button>
+        <button>Zapisz</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EKRAN 5: Kategorie -->
+<p class="mockup-label"><span class="person-badge adam">Adam</span> &nbsp; Kategorie</p>
+<div class="form-container" style="border-radius: 8px; border: 1px solid #d0cfc7; margin-bottom: 2rem;">
+  <div class="form-window">
+    <div class="titlebar"><span>Kategorie produktów</span><span>— □ ✕</span></div>
+    <div style="padding: 0.5rem 0;">
+      <div style="padding: 8px 14px; display: flex; justify-content: space-between; font-size: 13px; border-bottom: 1px solid #eae9e2;"><span>Łączniki</span><span style="color: #888;">48 produktów</span></div>
+      <div style="padding: 8px 14px; display: flex; justify-content: space-between; font-size: 13px; border-bottom: 1px solid #eae9e2;"><span>Drewno</span><span style="color: #888;">31 produktów</span></div>
+      <div style="padding: 8px 14px; display: flex; justify-content: space-between; font-size: 13px; border-bottom: 1px solid #eae9e2;"><span>Chemia</span><span style="color: #888;">22 produktów</span></div>
+      <div style="padding: 8px 14px; display: flex; justify-content: space-between; font-size: 13px;"><span>Narzędzia</span><span style="color: #888;">41 produktów</span></div>
+    </div>
+    <div style="display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid #d0cfc7;">
+      <input type="text" placeholder="Nazwa nowej kategorii" style="flex: 1;" />
+      <button>Dodaj</button>
+      <button>Usuń</button>
+    </div>
+  </div>
+</div>
+
+<!-- EKRAN 6: Stany magazynowe -->
+<p class="mockup-label"><span class="person-badge krzys">Krzyś</span> &nbsp; Stany magazynowe</p>
+<div class="mockup-frame">
+  <div class="titlebar"><span>Stany magazynowe</span><span>— □ ✕</span></div>
+  <div class="toolbar">
+    <button>Przyjęcie (+)</button>
+    <button>Wydanie (−)</button>
+    <select style="margin-left: auto;"><option>Wszystkie</option><option>Tylko alerty</option></select>
+  </div>
+  <table>
+    <thead>
+      <tr><th>Produkt</th><th>Ilość</th><th>Min.</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Śruba M8</td><td>520</td><td>50</td><td class="status-ok">OK</td></tr>
+      <tr class="row-danger"><td>Wkręt 4×60</td><td>8</td><td>30</td><td>⚠ NISKI</td></tr>
+      <tr class="row-warning"><td>Farba biała 5l</td><td>32</td><td>30</td><td>△ BLISKO</td></tr>
+      <tr><td>Deska 30×200</td><td>84</td><td>20</td><td class="status-ok">OK</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- EKRAN 7: Operacja przyjęcia/wydania -->
+<p class="mockup-label"><span class="person-badge krzys">Krzyś</span> &nbsp; Przyjęcie / wydanie</p>
+<div class="form-container" style="border-radius: 8px; border: 1px solid #d0cfc7; margin-bottom: 2rem;">
+  <div class="form-window">
+    <div class="titlebar"><span>Operacja magazynowa</span><span>— □ ✕</span></div>
+    <div class="form-body">
+      <div class="form-grid">
+        <label>Typ</label>
+        <div style="display: flex; gap: 16px;"><label><input type="radio" checked /> Przyjęcie</label><label><input type="radio" /> Wydanie</label></div>
+        <label>Produkt</label><select><option>Śruba M8 (520 szt.)</option></select>
+        <label>Ilość</label><input type="number" value="50" />
+        <label>Notatka</label><input type="text" placeholder="np. dostawa od X" />
+      </div>
+      <div class="info-box">Po operacji: 570 szt.</div>
+      <div class="form-actions">
+        <button>Anuluj</button>
+        <button>Zatwierdź</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EKRAN 8: Historia -->
+<p class="mockup-label"><span class="person-badge krzys">Krzyś</span> &nbsp; Historia operacji</p>
+<div class="mockup-frame">
+  <div class="titlebar"><span>Historia operacji</span><span>— □ ✕</span></div>
+  <div class="toolbar">
+    <input type="date" value="2026-04-01" />
+    <span style="font-size: 13px; color: #888;">do</span>
+    <input type="date" value="2026-04-19" />
+    <select><option>Wszystkie typy</option></select>
+    <select style="margin-left: auto;"><option>Wszyscy użytkownicy</option></select>
+  </div>
+  <table>
+    <thead>
+      <tr><th>Data</th><th>Typ</th><th>Produkt</th><th>Ilość</th><th>Użytkownik</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>19.04 14:22</td><td class="status-ok">+ IN</td><td>Śruba M8</td><td>50</td><td>adam</td></tr>
+      <tr><td>19.04 11:08</td><td class="status-danger">− OUT</td><td>Wkręt 4×60</td><td>12</td><td>krzys</td></tr>
+      <tr><td>18.04 16:45</td><td class="status-ok">+ IN</td><td>Farba biała 5l</td><td>20</td><td>admin</td></tr>
+      <tr><td>18.04 09:12</td><td class="status-danger">− OUT</td><td>Deska 30×200</td><td>6</td><td>gabrys</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- EKRAN 9: Wyszukiwarka -->
+<p class="mockup-label"><span class="person-badge wojtek">Wojtek</span> &nbsp; Wyszukiwarka</p>
+<div class="form-container" style="border-radius: 8px; border: 1px solid #d0cfc7; margin-bottom: 2rem;">
+  <div class="form-window" style="max-width: 460px;">
+    <div class="titlebar"><span>Szukaj w magazynie</span><span>— □ ✕</span></div>
+    <div class="form-body">
+      <input type="text" value="śrub" placeholder="Nazwa, SKU lub kategoria..." style="width: 100%; margin-bottom: 12px;" />
+      <div style="display: flex; gap: 14px; font-size: 13px; margin-bottom: 12px; color: #6a6a66; flex-wrap: wrap;">
+        <label><input type="checkbox" checked /> Nazwa</label>
+        <label><input type="checkbox" checked /> SKU</label>
+        <label><input type="checkbox" /> Kategoria</label>
+        <label><input type="checkbox" /> Tylko dostępne</label>
+      </div>
+      <div style="border-top: 1px solid #eae9e2; padding-top: 10px;">
+        <p style="font-size: 12px; color: #888; margin: 0 0 8px;">Wyniki (3):</p>
+        <div class="search-result"><span>Śruba M8 · SR-M8</span><span style="color: #888;">520 szt.</span></div>
+        <div class="search-result"><span>Śruba M10 · SR-M10</span><span style="color: #888;">180 szt.</span></div>
+        <div class="search-result"><span>Śrubokręt krzyż · NR-SK1</span><span style="color: #888;">12 szt.</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EKRAN 10: Raport PDF -->
+<p class="mockup-label"><span class="person-badge wojtek">Wojtek</span> &nbsp; Generowanie raportu PDF</p>
+<div class="form-container" style="border-radius: 8px; border: 1px solid #d0cfc7; margin-bottom: 2rem;">
+  <div class="form-window">
+    <div class="titlebar"><span>Generowanie raportu PDF</span><span>— □ ✕</span></div>
+    <div class="form-body">
+      <label style="font-size: 13px; color: #6a6a66; display: block; margin-bottom: 4px;">Typ raportu</label>
+      <select style="width: 100%; margin-bottom: 12px;">
+        <option>Stan magazynu</option>
+        <option>Historia operacji</option>
+        <option>Produkty poniżej minimum</option>
+      </select>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+        <div><label style="font-size: 13px; color: #6a6a66; display: block; margin-bottom: 4px;">Od</label><input type="date" value="2026-04-01" style="width: 100%;" /></div>
+        <div><label style="font-size: 13px; color: #6a6a66; display: block; margin-bottom: 4px;">Do</label><input type="date" value="2026-04-19" style="width: 100%;" /></div>
+      </div>
+      <label style="font-size: 13px; color: #6a6a66; display: block; margin-bottom: 4px;">Kategoria</label>
+      <select style="width: 100%; margin-bottom: 16px;"><option>Wszystkie</option></select>
+      <div class="form-actions">
+        <button>Podgląd</button>
+        <button>Zapisz PDF</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EKRAN 11: Panel admina -->
+<p class="mockup-label"><span class="person-badge gabrys">Gabryś</span> &nbsp; Panel administratora</p>
+<div class="mockup-frame">
+  <div class="titlebar"><span>Panel administratora — użytkownicy</span><span>— □ ✕</span></div>
+  <div class="toolbar">
+    <button>+ Dodaj użytkownika</button>
+    <button>Zmień hasło</button>
+    <button>Usuń</button>
+  </div>
+  <table>
+    <thead>
+      <tr><th>ID</th><th>Login</th><th>Rola</th><th>Utworzony</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>admin</td><td>administrator</td><td>01.03.2026</td></tr>
+      <tr><td>2</td><td>adam</td><td>pracownik</td><td>05.03.2026</td></tr>
+      <tr><td>3</td><td>krzys</td><td>pracownik</td><td>05.03.2026</td></tr>
+      <tr><td>4</td><td>gabrys</td><td>pracownik</td><td>05.03.2026</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- EKRAN 12: Alert -->
+<p class="mockup-label">Okno alertu — pokazywane przy starcie aplikacji</p>
+<div class="form-container" style="border-radius: 8px; border: 1px solid #d0cfc7; margin-bottom: 2rem;">
+  <div class="form-window" style="max-width: 320px;">
+    <div class="titlebar" style="color: #791F1F;"><span>⚠ Niski stan magazynowy</span><span>— □ ✕</span></div>
+    <div class="form-body" style="font-size: 13px;">
+      <p style="margin: 0 0 10px;">7 produktów poniżej stanu minimalnego:</p>
+      <ul style="margin: 0 0 12px; padding-left: 20px; color: #6a6a66;">
+        <li>Wkręt 4×60 (8/30)</li>
+        <li>Gwóźdź 100 (14/50)</li>
+        <li>Klej poliuretanowy (2/10)</li>
+        <li>+4 inne...</li>
+      </ul>
+      <div class="form-actions">
+        <button>Pokaż listę</button>
+        <button>OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2>Schemat bazy MySQL (wstępny)</h2>
+
+<div class="card">
+<pre style="background: #fafaf5; padding: 12px; border-radius: 4px; font-size: 13px; overflow-x: auto; margin: 0;">users
+  id, login, password_hash, role ('admin'/'pracownik'), created_at
+
+categories
+  id, name
+
+products
+  id, name, sku, category_id, quantity, min_quantity, unit, price
+
+operations
+  id, product_id, user_id, type ('IN'/'OUT'), quantity, note, created_at</pre>
+  <p style="margin-top: 10px; font-size: 13px; color: #6a6a66;">4 tabele, proste relacje. Pełny kod SQL z <code>CREATE TABLE</code> jest w sekcji dla Gabrysia powyżej.</p>
+</div>
+
+<h2>Pytania do ustalenia przed kodowaniem</h2>
+
+<div class="card">
+  <ul>
+    <li>Gdzie stawiamy MySQL? Każdy lokalnie (XAMPP) czy jeden wspólny serwer?</li>
+    <li>Gdzie uruchamiamy aplikację? Każdy <code>dotnet run</code> u siebie, czy wystawiamy jeden serwer testowy?</li>
+    <li>Jakie role dokładnie? "Admin" i "Pracownik", czy jeszcze np. "Kierownik"?</li>
+    <li>Czy pracownik widzi wszystko, czy ma ograniczone uprawnienia (np. nie może usuwać produktów — tylko admin)?</li>
+    <li>Czy jednostki miary (szt./kg/l) są stałe w słowniku czy wpisywane ręcznie?</li>
+    <li>Czy robimy zdjęcia produktów? (Rekomendacja: nie, komplikuje upload plików.)</li>
+    <li>Rejestracja nowych userów otwarta (każdy się zarejestruje) czy tylko przez admina?</li>
+  </ul>
+</div>
+
+<div class="footer">
+  Plan wygenerowany 19 kwietnia 2026 · System Zarządzania Magazynem · zaliczenie 4-osobowe
+</div>
+
+</div>
+
+</body>
+</html>
