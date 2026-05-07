@@ -1,0 +1,23 @@
+@page
+@model Magazyn.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = "Logowanie";
+}
+<h2>Logowanie</h2>
+<form method="post">
+    <div>
+        <label>Login</label><br/>
+        <input asp-for="Username" />
+    </div>
+    <br/>
+    <div>
+        <label>Hasło</label><br/>
+        <input asp-for="Password" type="password" />
+    </div>
+    <br/>
+    @if (Model.Error != null)
+    {
+        <p style="color:red">@Model.Error</p>
+    }
+    <button type="submit">Zaloguj</button>
+</form>
