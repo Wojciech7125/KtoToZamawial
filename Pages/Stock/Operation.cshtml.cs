@@ -52,3 +52,4 @@ public class OperationModel : PageModel
         return RedirectToPage("Index");
     }
 }
+
