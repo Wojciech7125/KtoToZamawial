@@ -1,0 +1,33 @@
+@page
+@model Magazyn.Pages.Stock.IndexModel
+@{
+    ViewData["Title"] = "Stany";
+}
+
+<h1>Stany magazynowe</h1>
+
+<p>
+    <a asp-page="Operation" asp-route-type="IN" class="btn btn-success">Przyjecie</a>
+    <a asp-page="Operation" asp-route-type="OUT" class="btn btn-warning">Wydanie</a>
+</p>
+
+<table class="table table-striped">
+    <tr>
+        <th>Produkt</th>
+        <th>Ilosc</th>
+        <th>Min</th>
+        <th>Status</th>
+    </tr>
+    @foreach (var p in Model.Products)
+    {
+        var status = p.Quantity < p.MinQuantity ? "NISKI" :
+                     p.Quantity < (int)(p.MinQuantity * 1.2) ? "BLISKO" : "OK";
+        var klasa = status == "NISKI" ? "table-danger" : status == "BLISKO" ? "table-warning" : "";
+        <tr class="@klasa">
+            <td>@p.Name</td>
+            <td>@p.Quantity</td>
+            <td>@p.MinQuantity</td>
+            <td>@status</td>
+        </tr>
+    }
+</table>
