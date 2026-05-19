@@ -26,7 +26,9 @@ public class DeleteModel : PageModel
         var product = data.Products.FirstOrDefault(p => p.Id == id);
         if (product == null) return NotFound();
 
+        // usuwamy tez operacje powiazane z produktem
         data.Products.Remove(product);
+        data.Operations.RemoveAll(o => o.ProductId == id);
         _db.Save(data);
         return RedirectToPage("Index");
     }
