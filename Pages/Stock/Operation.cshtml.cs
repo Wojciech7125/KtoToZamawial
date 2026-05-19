@@ -35,6 +35,14 @@ public class OperationModel : PageModel
             return Page();
         }
 
+        // przy wydaniu sprawdz czy jest wystarczajaco duzo towaru
+        if (Type == "OUT" && product.Quantity < Quantity)
+        {
+            Error = "Za mało towaru na stanie.";
+            Products = data.Products;
+            return Page();
+        }
+
         if (Type == "IN") product.Quantity += Quantity;
         else product.Quantity -= Quantity;
 
