@@ -1,0 +1,41 @@
+@page
+@model Magazyn.Pages.Stock.HistoryModel
+@{
+    ViewData["Title"] = "Historia operacji";
+}
+
+<h1>Historia operacji</h1>
+
+<form method="get">
+    <label>Od:</label>
+    <input type="date" name="from" value="@Model.From?.ToString("yyyy-MM-dd")" />
+    <label>Do:</label>
+    <input type="date" name="to" value="@Model.To?.ToString("yyyy-MM-dd")" />
+    <button type="submit" class="btn btn-primary">Filtruj</button>
+    <a href="/Stock/History" class="btn btn-secondary">Wyczysc</a>
+</form>
+<br />
+
+<table class="table table-striped">
+    <tr>
+        <th>Data</th>
+        <th>Produkt</th>
+        <th>Typ</th>
+        <th>Ilosc</th>
+    </tr>
+    @foreach (var o in Model.Operations)
+    {
+        var prod = Model.Products.FirstOrDefault(p => p.Id == o.ProductId);
+        <tr>
+            <td>@o.CreatedAt</td>
+            <td>@(prod?.Name ?? "-")</td>
+            <td>@o.Type</td>
+            <td>@o.Quantity</td>
+        </tr>
+    }
+</table>
+
+@if (Model.Operations.Count == 0)
+{
+    <p>Brak operacji.</p>
+}
