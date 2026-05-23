@@ -1,8 +1,50 @@
 @page
 @model IndexModel
 @{
-    ViewData["Title"] = "Magazyn";
+    ViewData["Title"] = "Strona glowna";
 }
 
-<h1>KTO TO ZAMAWIAL?</h1>
-<p>Wybierz z menu co chcesz zobaczyc.</p>
+<h1>KTO TO ZAMAWIAŁ? - panel</h1>
+
+<div class="row">
+    <div class="col">
+        <div class="alert alert-info">
+            <b>Produkty</b><br />@Model.TotalProducts
+        </div>
+    </div>
+    <div class="col">
+        <div class="alert alert-danger">
+            <b>Ponizej minimum</b><br />@Model.LowStock
+        </div>
+    </div>
+    <div class="col">
+        <div class="alert alert-secondary">
+            <b>Operacje</b><br />@Model.TotalOperations
+        </div>
+    </div>
+</div>
+
+<h3>Produkty z niskim stanem</h3>
+<table class="table table-striped">
+    <tr>
+        <th>Nazwa</th>
+        <th>SKU</th>
+        <th>Ilosc</th>
+        <th>Min</th>
+    </tr>
+    @foreach (var p in Model.Products.Where(p => p.Quantity < p.MinQuantity))
+    {
+        <tr class="table-danger">
+            <td>@p.Name</td>
+            <td>@p.Sku</td>
+            <td>@p.Quantity</td>
+            <td>@p.MinQuantity</td>
+        </tr>
+    }
+</table>
+
+<p>
+    <a asp-page="/Products/Index" class="btn btn-primary">Produkty</a>
+    <a asp-page="/Stock/Index" class="btn btn-primary">Stany</a>
+    <a asp-page="/Stock/History" class="btn btn-secondary">Historia</a>
+</p>
