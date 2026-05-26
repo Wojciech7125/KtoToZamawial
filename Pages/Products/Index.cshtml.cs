@@ -2,7 +2,7 @@ using Magazyn.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Magazyn.Pages.Products;
+namespace Magazyn.Pages.Products; // produkty
 
 [Authorize]
 public class IndexModel : PageModel
