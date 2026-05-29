@@ -24,6 +24,7 @@ public class HistoryModel : PageModel
 
         Operations = data.Operations
             .Where(o => (from == null || o.CreatedAt >= from) && (to == null || o.CreatedAt <= to))
+            .OrderByDescending(o => o.CreatedAt)
             .ToList();
     }
 }
