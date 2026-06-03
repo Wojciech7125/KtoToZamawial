@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Magazyn.Pages.Products;
+namespace Magazyn.Pages.Products; //ok
 
 [Authorize]
 public class EditModel : PageModel
