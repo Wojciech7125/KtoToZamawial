@@ -13,9 +13,21 @@
 
 <table class="table table-striped">
     <tr>
-        <th>Produkt</th>
-        <th>Ilosc</th>
-        <th>Min</th>
+        <th>
+            <a asp-page="Index" asp-route-sortBy="name" asp-route-desc="@(Model.SortBy == "name" && !Model.Desc)">
+                Produkt @(Model.SortBy == "name" ? (Model.Desc ? "↓" : "↑") : "↕")
+            </a>
+        </th>
+        <th>
+            <a asp-page="Index" asp-route-sortBy="quantity" asp-route-desc="@(Model.SortBy == "quantity" && !Model.Desc)">
+                Ilosc @(Model.SortBy == "quantity" ? (Model.Desc ? "↓" : "↑") : "↕")
+            </a>
+        </th>
+        <th>
+            <a asp-page="Index" asp-route-sortBy="min" asp-route-desc="@(Model.SortBy == "min" && !Model.Desc)">
+                Min @(Model.SortBy == "min" ? (Model.Desc ? "↓" : "↑") : "↕")
+            </a>
+        </th>
         <th>Status</th>
     </tr>
     @foreach (var p in Model.Products)
