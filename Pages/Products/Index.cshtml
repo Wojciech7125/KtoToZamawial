@@ -17,11 +17,27 @@
 
 <table class="table">
     <tr>
-        <th>Nazwa</th>
+        <th>
+            <a asp-page="Index" asp-route-search="@Model.Search" asp-route-sortBy="name" asp-route-desc="@(Model.SortBy == "name" && !Model.Desc)">
+                Nazwa @(Model.SortBy == "name" ? (Model.Desc ? "↓" : "↑") : "↕")
+            </a>
+        </th>
         <th>SKU</th>
-        <th>Kategoria</th>
-        <th>Ilosc</th>
-        <th>Cena</th>
+        <th>
+            <a asp-page="Index" asp-route-search="@Model.Search" asp-route-sortBy="category" asp-route-desc="@(Model.SortBy == "category" && !Model.Desc)">
+                Kategoria @(Model.SortBy == "category" ? (Model.Desc ? "↓" : "↑") : "↕")
+            </a>
+        </th>
+        <th>
+            <a asp-page="Index" asp-route-search="@Model.Search" asp-route-sortBy="quantity" asp-route-desc="@(Model.SortBy == "quantity" && !Model.Desc)">
+                Ilosc @(Model.SortBy == "quantity" ? (Model.Desc ? "↓" : "↑") : "↕")
+            </a>
+        </th>
+        <th>
+            <a asp-page="Index" asp-route-search="@Model.Search" asp-route-sortBy="price" asp-route-desc="@(Model.SortBy == "price" && !Model.Desc)">
+                Cena @(Model.SortBy == "price" ? (Model.Desc ? "↓" : "↑") : "↕")
+            </a>
+        </th>
         <th></th>
     </tr>
     @foreach (var p in Model.Products)
