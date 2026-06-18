@@ -26,8 +26,7 @@ public class IndexModel : PageModel
 
         IEnumerable<Product> prods = string.IsNullOrWhiteSpace(search)
             ? data.Products
-            : data.Products.Where(p => p.Name.Contains(search, StringComparison.OrdinalIgnoreCase)
-                                    || p.Sku.Contains(search, StringComparison.OrdinalIgnoreCase));
+            : data.Products.Where(p => p.Name.Contains(search, StringComparison.OrdinalIgnoreCase));
 
         // sortowanie po wybranej kolumnie
         if (SortBy == "quantity")

@@ -18,10 +18,6 @@ public class Product
     [StringLength(200)]
     public string Name { get; set; }
 
-    [Required(ErrorMessage = "SKU wymagane")]
-    [StringLength(50)]
-    public string Sku { get; set; }
-
     public int? CategoryId { get; set; }
 
     [Range(0, int.MaxValue)]

@@ -21,7 +21,6 @@
     {
       "Id": 1,
       "Name": "Mysz USB Logitech",
-      "Sku": "EL-001",
       "CategoryId": 1,
       "Quantity": 45,
       "MinQuantity": 10,
@@ -30,7 +29,6 @@
     {
       "Id": 2,
       "Name": "Klawiatura mechaniczna",
-      "Sku": "EL-002",
       "CategoryId": 1,
       "Quantity": 8,
       "MinQuantity": 10,
@@ -39,7 +37,6 @@
     {
       "Id": 3,
       "Name": "Monitor 24 cale",
-      "Sku": "EL-003",
       "CategoryId": 1,
       "Quantity": 3,
       "MinQuantity": 5,
@@ -48,7 +45,6 @@
     {
       "Id": 4,
       "Name": "Ryza papieru A4",
-      "Sku": "PAP-001",
       "CategoryId": 2,
       "Quantity": 120,
       "MinQuantity": 30,
@@ -57,7 +53,6 @@
     {
       "Id": 5,
       "Name": "Dlugopis niebieski",
-      "Sku": "PAP-002",
       "CategoryId": 2,
       "Quantity": 4,
       "MinQuantity": 50,
@@ -66,7 +61,6 @@
     {
       "Id": 6,
       "Name": "Wkretak krzyzakowy",
-      "Sku": "NAR-001",
       "CategoryId": 3,
       "Quantity": 22,
       "MinQuantity": 8,
@@ -75,7 +69,6 @@
     {
       "Id": 7,
       "Name": "Mlotek stalowy",
-      "Sku": "NAR-002",
       "CategoryId": 3,
       "Quantity": 0,
       "MinQuantity": 3,
@@ -84,7 +77,6 @@
     {
       "Id": 8,
       "Name": "Plyn do mycia 5L",
-      "Sku": "CHE-001",
       "CategoryId": 4,
       "Quantity": 17,
       "MinQuantity": 6,
@@ -93,7 +85,6 @@
     {
       "Id": 9,
       "Name": "Wkretarka",
-      "Sku": "AL-01",
       "CategoryId": 3,
       "Quantity": 18,
       "MinQuantity": 10,
