@@ -22,7 +22,6 @@
                 Nazwa @(Model.SortBy == "name" ? (Model.Desc ? "↓" : "↑") : "↕")
             </a>
         </th>
-        <th>SKU</th>
         <th>
             <a asp-page="Index" asp-route-search="@Model.Search" asp-route-sortBy="category" asp-route-desc="@(Model.SortBy == "category" && !Model.Desc)">
                 Kategoria @(Model.SortBy == "category" ? (Model.Desc ? "↓" : "↑") : "↕")
@@ -46,7 +45,6 @@
         var klasa = p.Quantity < p.MinQuantity ? "table-danger" : "";
         <tr class="@klasa">
             <td>@p.Name</td>
-            <td>@p.Sku</td>
             <td>@(cat?.Name ?? "-")</td>
             <td>@p.Quantity</td>
             <td>@p.Price</td>

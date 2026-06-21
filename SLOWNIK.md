@@ -11,7 +11,7 @@ Zamiast bazy danych mamy plik JSON. Struktura:
 ```json
 {
   "categories": [ { "id": 1, "name": "Elektronika" } ],
-  "products": [ { "id": 1, "name": "Mysz", "sku": "EL-001", "categoryId": 1,
+  "products": [ { "id": 1, "name": "Mysz", "categoryId": 1,
                   "quantity": 45, "minQuantity": 10, "price": 59.99 } ],
   "operations": [ { "id": 1, "productId": 1, "userId": "1",
                     "type": "IN", "quantity": 50, "createdAt": "2026-05-18T09:12:00" } ]
@@ -30,7 +30,6 @@ public string Name { get; set; }
 ```csharp
 public int Id { get; set; }
 public string Name { get; set; }
-public string Sku { get; set; }
 public int? CategoryId { get; set; }
 public int Quantity { get; set; }
 public int MinQuantity { get; set; }
