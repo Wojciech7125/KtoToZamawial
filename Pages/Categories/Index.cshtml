@@ -1,0 +1,46 @@
+@page
+@model Magazyn.Pages.Categories.IndexModel
+@{
+    ViewData["Title"] = "Kategorie";
+}
+
+<h1>Kategorie</h1>
+
+<form method="post" asp-page-handler="Add">
+    <input asp-for="NewName" class="form-control" placeholder="Nazwa kategorii" style="display:inline-block;width:auto" />
+    <button type="submit" class="btn btn-success">Dodaj kategorię</button>
+</form>
+
+@if (Model.Error != null)
+{
+    <p style="color:red">@Model.Error</p>
+}
+<br />
+
+<table class="table">
+    <tr>
+        <th>Nazwa</th>
+        <th>Liczba produktów</th>
+        <th></th>
+    </tr>
+    @foreach (var c in Model.Categories)
+    {
+        var count = Model.Products.Count(p => p.CategoryId == c.Id);
+        <tr>
+            <td>
+                <form method="post" asp-page-handler="Edit">
+                    <input type="hidden" name="EditId" value="@c.Id" />
+                    <input type="text" name="EditName" value="@c.Name" class="form-control" style="display:inline-block;width:auto" />
+                    <button type="submit" class="btn btn-primary btn-sm">Zapisz</button>
+                </form>
+            </td>
+            <td>@count</td>
+            <td>
+                <form method="post" asp-page-handler="Delete">
+                    <input type="hidden" name="DeleteId" value="@c.Id" />
+                    <button type="submit" class="btn btn-danger btn-sm" @(count > 0 ? "disabled" : "")>Usuń</button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>
