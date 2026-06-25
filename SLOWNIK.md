@@ -107,10 +107,6 @@ Strona `/Categories` działa tak samo — dostępna tylko dla kierownika. Lista,
 - Zmienne lokalne: camelCase (`var products`, `int productId`)
 - Prywatne pola: podkreślnik + camelCase (`_db`, `_cfg`)
 
-## Konwencja commitów
-
-Commity do tego projektu wystawiamy na Wojtka: `Wojciech Wojtach <wojtachwojciech5@gmail.com>`.
-
 ## Pułapki
 
 ### UserId to string, nie int!
