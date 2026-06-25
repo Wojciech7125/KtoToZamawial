@@ -1,0 +1,30 @@
+@page
+@model Magazyn.Pages.Users.IndexModel
+@{
+    ViewData["Title"] = "Użytkownicy";
+}
+
+<h1>Użytkownicy</h1>
+
+<a asp-page="Create" class="btn btn-success">Dodaj użytkownika</a>
+<br /><br />
+
+<table class="table">
+    <tr>
+        <th>Login</th>
+        <th>Ranga</th>
+        <th></th>
+    </tr>
+    @foreach (var u in Model.Users)
+    {
+        <tr>
+            <td>@u.Username</td>
+            <td>@u.Role</td>
+            <td>
+                <a asp-page="Edit" asp-route-id="@u.Id">Zarządzaj</a>
+                |
+                <a asp-page="Delete" asp-route-id="@u.Id">Usuń</a>
+            </td>
+        </tr>
+    }
+</table>

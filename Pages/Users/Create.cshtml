@@ -1,0 +1,34 @@
+@page
+@model Magazyn.Pages.Users.CreateModel
+@{
+    ViewData["Title"] = "Dodaj użytkownika";
+}
+
+<h1>Dodaj użytkownika</h1>
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <p>
+        <label>Login:</label>
+        <input asp-for="User.Username" class="form-control" />
+        <span asp-validation-for="User.Username" class="text-danger"></span>
+    </p>
+
+    <p>
+        <label>Hasło:</label>
+        <input asp-for="User.Password" type="password" class="form-control" />
+        <span asp-validation-for="User.Password" class="text-danger"></span>
+    </p>
+
+    <p>
+        <label>Ranga:</label>
+        <select asp-for="User.Role" class="form-control">
+            <option value="pracownik">pracownik</option>
+            <option value="kierownik">kierownik</option>
+        </select>
+    </p>
+
+    <button type="submit" class="btn btn-primary">Zapisz</button>
+    <a href="/Users" class="btn btn-secondary">Anuluj</a>
+</form>
