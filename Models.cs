@@ -40,3 +40,12 @@ public class Operation
     public int Quantity { get; set; }
     public DateTime CreatedAt { get; set; }
 }
+
+// uzytkownik systemu
+public class User
+{
+    public string Id { get; set; }
+    public string Username { get; set; }
+    public string Password { get; set; }
+    public string Role { get; set; }
+}
