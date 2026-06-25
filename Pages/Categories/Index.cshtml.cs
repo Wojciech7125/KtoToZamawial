@@ -32,7 +32,9 @@ public class IndexModel : PageModel
         if (string.IsNullOrWhiteSpace(NewName))
         {
             Error = "Nazwa jest wymagana.";
-            var d = _db.Load(); Categories = d.Categories; Products = d.Products;
+            var d = _db.Load();
+            Categories = d.Categories;
+            Products = d.Products;
             return Page();
         }
 
@@ -63,7 +65,9 @@ public class IndexModel : PageModel
         if (string.IsNullOrWhiteSpace(EditName))
         {
             Error = "Nazwa jest wymagana.";
-            var d = _db.Load(); Categories = d.Categories; Products = d.Products;
+            var d = _db.Load();
+            Categories = d.Categories;
+            Products = d.Products;
             return Page();
         }
 
