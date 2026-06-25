@@ -20,6 +20,10 @@
                         <li class="nav-item"><a class="nav-link text-dark" asp-page="/Products/Index">Produkty</a></li>
                         <li class="nav-item"><a class="nav-link text-dark" asp-page="/Stock/Index">Stany</a></li>
                         <li class="nav-item"><a class="nav-link text-dark" asp-page="/Stock/History">Historia</a></li>
+                        @if (User.IsInRole("kierownik"))
+                        {
+                            <li class="nav-item"><a class="nav-link text-dark" asp-page="/Users/Index">Użytkownicy</a></li>
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
