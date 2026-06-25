@@ -1,6 +1,7 @@
 @page
 @model Magazyn.Pages.Account.LoginModel
 @{
+    Layout = "_LayoutLogin";
     ViewData["Title"] = "Logowanie";
 }
 <h2>Logowanie</h2>
@@ -19,5 +20,5 @@
     {
         <p style="color:red">@Model.Error</p>
     }
-    <button type="submit">Zaloguj</button>
+    <button type="submit" class="btn btn-primary">Zaloguj</button>
 </form>
