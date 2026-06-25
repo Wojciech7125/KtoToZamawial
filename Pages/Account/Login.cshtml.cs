@@ -39,7 +39,6 @@ public class LoginModel : PageModel
             }
         }
 
-        // bledne dane logowania
         Error = "Nieprawidłowy login lub hasło.";
         return Page();
     }
