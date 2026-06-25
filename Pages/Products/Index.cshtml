@@ -13,6 +13,10 @@
 <br />
 
 <a asp-page="Create" class="btn btn-success">Dodaj produkt</a>
+@if (User.IsInRole("kierownik"))
+{
+    <a asp-page="/Categories/Index" class="btn btn-secondary">Zarządzaj kategoriami</a>
+}
 <br /><br />
 
 <table class="table">

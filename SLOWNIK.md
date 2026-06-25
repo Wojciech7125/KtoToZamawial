@@ -78,6 +78,7 @@ _db.Save(data);
 | `/Users/Create` | `Pages/Users/Create.cshtml` | Gabryś |
 | `/Users/Edit/{id}` | `Pages/Users/Edit.cshtml` | Gabryś |
 | `/Users/Delete/{id}` | `Pages/Users/Delete.cshtml` | Gabryś |
+| `/Categories` | `Pages/Categories/Index.cshtml` | Gabryś |
 
 ## Rangi użytkowników
 
@@ -89,6 +90,8 @@ Pole `"role"` w `data/users.json` określa uprawnienia:
 | `kierownik` | Wszystko + zakładka Użytkownicy (panel admina) |
 
 Strony `/Users/*` są chronione atrybutem `[Authorize(Roles = "kierownik")]`.
+
+Strona `/Categories` działa tak samo — dostępna tylko dla kierownika. Lista, dodawanie i edycja nazwy kategorii na jednej stronie. Nie można usunąć kategorii, do której podpięty jest choćby jeden produkt (blokada w UI i na serwerze).
 
 ## Stałe wartości
 
