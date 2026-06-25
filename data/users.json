@@ -1,8 +1,34 @@
 {
-  "users": [
-    { "id": "1", "username": "gabriel", "password": "1234", "role": "kierownik" },
-    { "id": "2", "username": "wojtek", "password": "1234", "role": "kierownik" },
-    { "id": "3", "username": "adam", "password": "1234", "role": "kierownik" },
-    { "id": "4", "username": "krzysiek", "password": "1234", "role": "kierownik" }
+  "Users": [
+    {
+      "Id": "1",
+      "Username": "gabriel",
+      "Password": "1234",
+      "Role": "kierownik"
+    },
+    {
+      "Id": "2",
+      "Username": "wojtek",
+      "Password": "1234",
+      "Role": "kierownik"
+    },
+    {
+      "Id": "3",
+      "Username": "adam",
+      "Password": "1234",
+      "Role": "kierownik"
+    },
+    {
+      "Id": "4",
+      "Username": "krzysiek",
+      "Password": "1234",
+      "Role": "kierownik"
+    },
+    {
+      "Id": "5",
+      "Username": "pracownik2",
+      "Password": "1234",
+      "Role": "pracownik"
+    }
   ]
 }
