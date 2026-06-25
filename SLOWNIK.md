@@ -74,11 +74,11 @@ _db.Save(data);
 | `/Stock` | `Pages/Stock/Index.cshtml` | Krzyś |
 | `/Stock/Operation` | `Pages/Stock/Operation.cshtml` | Krzyś |
 | `/Stock/History` | `Pages/Stock/History.cshtml` | Krzyś |
-| `/Users` | `Pages/Users/Index.cshtml` | Gabryś |
-| `/Users/Create` | `Pages/Users/Create.cshtml` | Gabryś |
-| `/Users/Edit/{id}` | `Pages/Users/Edit.cshtml` | Gabryś |
-| `/Users/Delete/{id}` | `Pages/Users/Delete.cshtml` | Gabryś |
-| `/Categories` | `Pages/Categories/Index.cshtml` | Gabryś |
+| `/Users` | `Pages/Users/Index.cshtml` | Wojtek |
+| `/Users/Create` | `Pages/Users/Create.cshtml` | Wojtek |
+| `/Users/Edit/{id}` | `Pages/Users/Edit.cshtml` | Wojtek |
+| `/Users/Delete/{id}` | `Pages/Users/Delete.cshtml` | Wojtek |
+| `/Categories` | `Pages/Categories/Index.cshtml` | Wojtek |
 
 ## Rangi użytkowników
 
@@ -106,6 +106,10 @@ Strona `/Categories` działa tak samo — dostępna tylko dla kierownika. Lista,
 - Properties: PascalCase (`Name`, `ProductId`)
 - Zmienne lokalne: camelCase (`var products`, `int productId`)
 - Prywatne pola: podkreślnik + camelCase (`_db`, `_cfg`)
+
+## Konwencja commitów
+
+Commity do tego projektu wystawiamy na Wojtka: `Wojciech Wojtach <wojtachwojciech5@gmail.com>`.
 
 ## Pułapki
 
