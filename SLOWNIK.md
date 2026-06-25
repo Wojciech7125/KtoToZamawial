@@ -74,6 +74,21 @@ _db.Save(data);
 | `/Stock` | `Pages/Stock/Index.cshtml` | Krzyś |
 | `/Stock/Operation` | `Pages/Stock/Operation.cshtml` | Krzyś |
 | `/Stock/History` | `Pages/Stock/History.cshtml` | Krzyś |
+| `/Users` | `Pages/Users/Index.cshtml` | Gabryś |
+| `/Users/Create` | `Pages/Users/Create.cshtml` | Gabryś |
+| `/Users/Edit/{id}` | `Pages/Users/Edit.cshtml` | Gabryś |
+| `/Users/Delete/{id}` | `Pages/Users/Delete.cshtml` | Gabryś |
+
+## Rangi użytkowników
+
+Pole `"role"` w `data/users.json` określa uprawnienia:
+
+| Ranga | Co widzi |
+|---|---|
+| `pracownik` | Produkty, Stany, Historia — brak panelu admina |
+| `kierownik` | Wszystko + zakładka Użytkownicy (panel admina) |
+
+Strony `/Users/*` są chronione atrybutem `[Authorize(Roles = "kierownik")]`.
 
 ## Stałe wartości
 
