@@ -89,9 +89,9 @@ Pole `"role"` w `data/users.json` określa uprawnienia:
 | `pracownik` | Produkty, Stany, Historia — brak panelu admina |
 | `kierownik` | Wszystko + zakładka Użytkownicy (panel admina) |
 
-Strony `/Users/*` są chronione atrybutem `[Authorize(Roles = "kierownik")]`.
+Strony `/Users/*` i `/Categories` wymagają rangi kierownik.
 
-Strona `/Categories` działa tak samo — dostępna tylko dla kierownika. Lista, dodawanie i edycja nazwy kategorii na jednej stronie. Nie można usunąć kategorii, do której podpięty jest choćby jeden produkt (blokada w UI i na serwerze).
+Kategorii z przypisanymi produktami nie można usunąć.
 
 ## Stałe wartości
 
