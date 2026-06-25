@@ -1,0 +1,19 @@
+@page "{id}"
+@model Magazyn.Pages.Users.DeleteModel
+@{
+    ViewData["Title"] = "Usuń użytkownika";
+}
+
+<h1>Usuń użytkownika</h1>
+
+<p>Na pewno usunąć tego użytkownika?</p>
+
+<p>
+    <b>@Model.User.Username</b>
+</p>
+
+<form method="post">
+    <input type="hidden" name="id" value="@Model.User.Id" />
+    <button type="submit" class="btn btn-danger">Usuń</button>
+    <a href="/Users" class="btn btn-secondary">Anuluj</a>
+</form>
